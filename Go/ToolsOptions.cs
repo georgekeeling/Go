@@ -49,7 +49,9 @@ namespace GoPlanner
     {
       StartPosition = FormStartPosition.CenterParent;
       SetCombos();
+      EnableSave.Checked = enableSave;
       ShowDialog();
+      SaveOptions();
     }
     private void SetCombos()
     {
