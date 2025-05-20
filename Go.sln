@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Go", "Go\Go.csproj", "{46504D66-3D1E-48D8-A3A7-4188CB0EDBC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoServer", "GoServer\GoServer.csproj", "{62386397-5764-4F68-938B-598166D6A29B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoCarta", "GoCarta\GoCarta.csproj", "{020DD650-E56C-4CB5-81DF-7F4F20B04120}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GoCartaDLL", "GoCartaDLL\GoCartaDLL.vbproj", "{6565B3C3-CD84-44D1-9F87-CF170B2C560A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46504D66-3D1E-48D8-A3A7-4188CB0EDBC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46504D66-3D1E-48D8-A3A7-4188CB0EDBC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46504D66-3D1E-48D8-A3A7-4188CB0EDBC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46504D66-3D1E-48D8-A3A7-4188CB0EDBC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62386397-5764-4F68-938B-598166D6A29B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62386397-5764-4F68-938B-598166D6A29B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62386397-5764-4F68-938B-598166D6A29B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62386397-5764-4F68-938B-598166D6A29B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{020DD650-E56C-4CB5-81DF-7F4F20B04120}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{020DD650-E56C-4CB5-81DF-7F4F20B04120}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{020DD650-E56C-4CB5-81DF-7F4F20B04120}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{020DD650-E56C-4CB5-81DF-7F4F20B04120}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6565B3C3-CD84-44D1-9F87-CF170B2C560A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6565B3C3-CD84-44D1-9F87-CF170B2C560A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6565B3C3-CD84-44D1-9F87-CF170B2C560A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6565B3C3-CD84-44D1-9F87-CF170B2C560A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A1DBBEF4-7E07-4D95-AB9C-14AE93B90F92}
+	EndGlobalSection
+EndGlobal

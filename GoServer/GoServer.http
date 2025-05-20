@@ -1,0 +1,6 @@
+@GoServer_HostAddress = http://localhost:5288
+
+GET {{GoServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
