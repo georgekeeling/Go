@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using GoServer;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace SignalRChat.Hubs
 {
@@ -12,25 +15,188 @@ namespace SignalRChat.Hubs
   {
     public override Task OnConnectedAsync()
     {
-      Debug.WriteLine($"Client connected: {Context.ConnectionId}");
+      Debug.WriteLine($">>>Client connected: {Context.ConnectionId}");
       return base.OnConnectedAsync();
     }
-    public override Task OnDisconnectedAsync(Exception exception)
+    public override async Task OnDisconnectedAsync(Exception? exception)
     {
-      Debug.WriteLine($"Client disconnected: {Context.ConnectionId}");
-      return base.OnDisconnectedAsync(exception);
+      Debug.Write($">>>Client disconnected: {Context.ConnectionId} ");
+      // remove user from list
+      // if they are opponent to anybdy. tell that anybody and clean up
+      var Users = Gls.users;
+      string opponent = "";
+      User? testUser = null;   // ? tells compiler that testUser might be null.
+      lock (Gls.usersLock)
+      {
+        // need lock here in case multiple instances adding same name ...
+        testUser = Users.Find(x => x.ConnectionId == Context.ConnectionId);
+        if (testUser == null)
+        {
+          Debug.WriteLine("Player not found" );
+        }
+        else
+        {
+          Debug.WriteLine("removing" + testUser.Name);
+          opponent = testUser.Opponent;
+          Users.Remove(testUser);   // remove user from list
+          if (opponent != "")
+          {
+            // opponent is busy, so we need to tell them (after lock ended) that their opponent has departed
+            // and clean up their opponent too
+            User? testOpponent = Users.Find(x => x.Name.ToLower() == opponent.ToLower());
+            if (testOpponent != null)
+            {
+              testOpponent.Opponent = "";   // signals that testOpponent is no longer busy
+            }
+            else
+            {
+              Debug.WriteLine(">>> Opponent not found: " + opponent);
+            }
+          }
+        }
+      }
+      if (opponent != "")
+      {
+        await SendPlayer(opponent, "OpponentDeparted");
+      }
+      await base.OnDisconnectedAsync(exception);
+    }
+    public async Task CheckName(string playerName)
+    {
+      // check playerName not in use. If not, add to users
+      var Users = Gls.users;
+      User? testUser = null;   // ? tells compiler that testUser might be null.
+      lock (Gls.usersLock)
+      {
+        // need lock here in case multiple instances adding same name ...
+        Debug.WriteLine(">>>" + playerName + " CheckName locked");
+        string lowerName = playerName.ToLower();
+        testUser = Users.Find(x => x.Name.ToLower() == lowerName);
+        if (testUser == null)
+        {
+          Users.Add(new User(playerName, Context.ConnectionId));
+          Debug.WriteLine(">>>" + playerName + " Num users = " + Users.Count + ". Unlocking");
+        }
+        else
+        {
+          Debug.WriteLine(">>>" + playerName + " Duplicate name. Unlocking");
+        }
+      }
+      if (testUser == null)
+      {
+        await Clients.Caller.SendAsync("NameOK");
+      }
+      else
+      {
+        await Clients.Caller.SendAsync("NameHadError");
+      }
+    }
+    public async Task Challenge(string playerName, string opponentName)
+    {
+      // player is issuing challenge to opponent
+      // 1. check opponent exists and is not already playing
+      // 2. if opponent is not playing or being challenged, send them a message to accept or decline
+      // 3. Communicate result back to player
+      var Users = Gls.users;
+      User? testOpponent = null;   // ? tells compiler that testUser might be null.
+      lock (Gls.usersLock)
+      {
+        string lowerName = opponentName.ToLower();
+        testOpponent = Users.Find(x => (x.Name.ToLower() == lowerName) && (x.Opponent == ""));
+        if (testOpponent != null)
+        {
+          testOpponent.Opponent = playerName;   // signals that testOpponent being challenged
+        }
+      }
+      if (testOpponent == null)
+      {
+        await Clients.Caller.SendAsync("OpponentUnavailable");
+        Debug.WriteLine(">>>" + opponentName + " No such user / busy");
+      }
+      else
+      {
+        await Clients.Caller.SendAsync("OpponentThinking");
+        await Clients.Client(testOpponent.ConnectionId).SendAsync("ChallengeIn", playerName);
+      }
+    }
+    public async Task AcceptChallenge(string opponentName, string playerName)
+    {
+      // opponent has accepted player's challenge
+      // playerName, opponentName are same values as in Challenge()
+      // set playerName's opponent = opponentName
+      var Users = Gls.users;
+      User? testPlayer = null; 
+      lock (Gls.usersLock)
+      {
+        string lowerName = playerName.ToLower();
+        testPlayer = Users.Find(x => (x.Name.ToLower() == lowerName));
+        if (testPlayer == null)
+        {
+          User? testOpponent = null;
+          string lowerNameOpp = opponentName.ToLower();
+          testOpponent = Users.Find(x => (x.Name.ToLower() == lowerNameOpp));
+          if (testOpponent != null)
+          {
+            // catastrophe
+            testOpponent.Opponent = "";  // opponent is no longer busy
+          }   
+        }
+        else
+        {
+          testPlayer.Opponent = opponentName;   // signals that game is started
+        }
+      }
+      if (testPlayer == null)
+      {
+        await Clients.Caller.SendAsync("OpponentDeparted");   // catastrophe
+      }
+      else
+      {
+        await Clients.Client(testPlayer.ConnectionId).SendAsync("ChallengeAccepted");
+      }
+    }
+    public async Task DeclineChallenge(string opponentName, string playerName)
+    {
+      // opponent has declined player's challenge
+      // playerName, opponentName are same values as in Challenge()
+      // set playerName's opponent = "" (not busy)
+      var Users = Gls.users;
+      User? testOpponent = null; 
+      lock (Gls.usersLock)
+      {
+        string lowerName = opponentName.ToLower();
+        testOpponent = Users.Find(x => (x.Name.ToLower() == lowerName));
+        if (testOpponent != null)
+        {
+          testOpponent.Opponent = "";   // signals that testOpponent is free
+        }
+      }
+      await SendPlayer(playerName, "ChallengeDeclined");
+    }
+    private async Task SendPlayer (string playerName, string message)
+    {
+      // send message to player
+      var Users = Gls.users;
+      string lowerName2 = playerName.ToLower();
+      User? testPlayer = Users.Find(x => (x.Name.ToLower() == lowerName2));
+      if (testPlayer != null)
+      {
+        Debug.WriteLine(">>> ChallengeDeclined: sent to " + testPlayer.Name);
+        await Clients.Client(testPlayer.ConnectionId).SendAsync(message);
+      }
     }
     public async Task Ping(string message)
     {
       var cID = Context.ConnectionId;
-      Debug.WriteLine("ping " + message);
+      Debug.WriteLine(">>> ping " + message);
       await Clients.Caller.SendAsync("pingBack", cID);           // that works
       // await Clients.Client(cID).SendAsync("pingBack", cID);   // that also works
     }
+    // Test task: to be deleted
     public async Task TellMeGroups()
     {
       var cID = Context.ConnectionId;
-      Debug.WriteLine("TellMeGroups");
+      Debug.WriteLine(">>> TellMeGroups");
       string[] fakeGroups = ["There are no", "games", "on this server. Ha!"];
       await Clients.Caller.SendAsync("GroupList", fakeGroups); 
     }

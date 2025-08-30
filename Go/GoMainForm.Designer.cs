@@ -84,6 +84,7 @@
       this.testConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.ScoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.TestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.StartGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.TableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -577,6 +578,7 @@
             this.refreshToolStripMenuItem,
             this.testConnectToolStripMenuItem,
             this.ScoreToolStripMenuItem,
+            this.StartGameToolStripMenuItem,
             this.TestToolStripMenuItem});
       this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
       this.toolsToolStripMenuItem.Size = new System.Drawing.Size(89, 36);
@@ -585,27 +587,27 @@
       // optionsToolStripMenuItem
       // 
       this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-      this.optionsToolStripMenuItem.Size = new System.Drawing.Size(285, 44);
+      this.optionsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
       this.optionsToolStripMenuItem.Text = "&Options";
       this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
       // 
       // toolStripSeparator11
       // 
       this.toolStripSeparator11.Name = "toolStripSeparator11";
-      this.toolStripSeparator11.Size = new System.Drawing.Size(282, 6);
+      this.toolStripSeparator11.Size = new System.Drawing.Size(356, 6);
       // 
       // refreshToolStripMenuItem
       // 
       this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
       this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-      this.refreshToolStripMenuItem.Size = new System.Drawing.Size(285, 44);
+      this.refreshToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
       this.refreshToolStripMenuItem.Text = "Refresh";
       this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
       // 
       // testConnectToolStripMenuItem
       // 
       this.testConnectToolStripMenuItem.Name = "testConnectToolStripMenuItem";
-      this.testConnectToolStripMenuItem.Size = new System.Drawing.Size(285, 44);
+      this.testConnectToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
       this.testConnectToolStripMenuItem.Text = "Test Connect";
       this.testConnectToolStripMenuItem.Click += new System.EventHandler(this.testConnectToolStripMenuItem_Click);
       // 
@@ -613,7 +615,7 @@
       // 
       this.ScoreToolStripMenuItem.Name = "ScoreToolStripMenuItem";
       this.ScoreToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
-      this.ScoreToolStripMenuItem.Size = new System.Drawing.Size(285, 44);
+      this.ScoreToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
       this.ScoreToolStripMenuItem.Text = "Score";
       this.ScoreToolStripMenuItem.Click += new System.EventHandler(this.ScoreToolStripMenuItem_Click);
       // 
@@ -621,9 +623,17 @@
       // 
       this.TestToolStripMenuItem.Name = "TestToolStripMenuItem";
       this.TestToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-      this.TestToolStripMenuItem.Size = new System.Drawing.Size(285, 44);
+      this.TestToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
       this.TestToolStripMenuItem.Text = "Test";
       this.TestToolStripMenuItem.Click += new System.EventHandler(this.TestToolStripMenuItem_Click);
+      // 
+      // StartGameToolStripMenuItem
+      // 
+      this.StartGameToolStripMenuItem.Name = "StartGameToolStripMenuItem";
+      this.StartGameToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
+      this.StartGameToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.StartGameToolStripMenuItem.Text = "Start Game";
+      this.StartGameToolStripMenuItem.Click += new System.EventHandler(this.StartGameToolStripMenuItem_Click);
       // 
       // helpToolStripMenuItem
       // 
@@ -773,6 +783,7 @@
     public System.Windows.Forms.ToolStripButton TSBremovals;
     public System.Windows.Forms.ToolStripButton TSBterritories;
     public System.Windows.Forms.ToolStripButton TSBconnections;
+    private System.Windows.Forms.ToolStripMenuItem StartGameToolStripMenuItem;
   }
 }
 

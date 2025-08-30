@@ -14,15 +14,14 @@ namespace GoPlanner
   {
     private void TestToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      BatchCompareCvsVB();
+      ModScore.N1++;
     }
-    //private void TestFriendly()
-    //{
-    //  for (byte i = 0; i < 8; i++)
-    //  {
-    //    Console.WriteLine("" + i + " " + VBdll.TestFriendly(i) + " " + ModScore.TestFriendly(i));
-    //  }
-    //}
+    private void TestBouzy()
+    {
+      int timeMs = 0;
+      ModScore.Bouzy1(ref timeMs, this);
+      statusM.Set("Bouzy in " + timeMs + " ms");
+    }
     private void TestScoreVB()
     {
       double score = 0;

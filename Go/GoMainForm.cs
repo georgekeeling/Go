@@ -1077,6 +1077,12 @@ namespace GoPlanner
       ct.Show();
     }
 
+    private void StartGameToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      GameSetUp gameSetUp = new GameSetUp(this);
+      gameSetUp.ShowDialog();
+      string test = gameSetUp.PlayerName.Text;
+    }
   }
   [Serializable]          // must be [Serializable] for copy / paste. 
   public class AStone

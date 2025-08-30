@@ -48,9 +48,12 @@ namespace GoPlanner
         new System.Drawing.Point(Location.X + 100, Location.Y + 100);
       Properties.Settings.Default.Save();
 
-      Thread independent_thread = new Thread(NewFormStart);
-      independent_thread.SetApartmentState(ApartmentState.STA);
-      independent_thread.Start();
+      //Thread independent_thread = new Thread(NewFormStart);
+      //independent_thread.SetApartmentState(ApartmentState.STA);
+      //independent_thread.Start();
+
+      // This way does not share static data. Also you can't debug it.
+      System.Diagnostics.Process.Start(Application.ExecutablePath);
     }
     private void NewFormStart ()
     {

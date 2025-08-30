@@ -72,6 +72,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameSetUp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GameSetUp.Designer.cs">
+      <DependentUpon>GameSetUp.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScoreControl.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +161,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FileProperties.resx">
       <DependentUpon>FileProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GameSetUp.resx">
+      <DependentUpon>GameSetUp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GoMainForm.resx">
       <DependentUpon>GoMainForm.cs</DependentUpon>

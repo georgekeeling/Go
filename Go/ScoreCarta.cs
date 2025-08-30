@@ -254,6 +254,55 @@ namespace GoPlanner
       Chains[s].EyeLikesNumber = Funct(s, "EL");
       Chains[s].GroupTerritory = TerritoryCompute(Gr);
     }
+    public static void Bouzy1(ref int timeMs, GoPlanner data)
+    {
+      Stopwatch stopWatch = new Stopwatch();
+      stopWatch.Start();
+      for (int i = 0; i < data.bSide; i++)
+      {
+        for (int j = 0; j < data.bSide; j++)
+        {
+          int code = data.thePoints[i, j].color & 0x7F;
+          switch (code)
+          {
+            case 0:
+              Board[i, j] = 0;
+              break;
+            case 1:
+              Board[i, j] = -1;
+              break;
+            case 2:
+              Board[i, j] = 1;
+              break;
+            default:
+              // Error: code should be 0, 1, or 2
+              Console.WriteLine("Error in Bouzy1: invalid color code");
+              break;
+          }
+        }
+      }
+      try
+      {
+        ScGui.gp = data;
+        ScGui.ResetImage();
+        Shows = true;
+        Bouzy();
+      }
+      catch (Exception ex)
+      {
+        // Get the stack trace with file info
+        var st = new StackTrace(ex, true);
+        // Get the top stack frame
+        var frame = st.GetFrame(0);
+        int line = frame?.GetFileLineNumber() ?? 0;
+        string file = Path.GetFileName(frame?.GetFileName());
+        Console.WriteLine($"Error: {ex.Message} File: {file} Line: {line}");
+        ScGui.haveScore = false;
+      }
+      stopWatch.Stop();
+      TimeSpan ts = stopWatch.Elapsed;
+      timeMs = ts.Seconds * 1000 + ts.Milliseconds;
+    }
     private static void Bouzy()
     {
       // Bouzy's routine for counting territory
@@ -355,7 +404,16 @@ namespace GoPlanner
             BlackTerritory++;
             if (Shows) { ScGui.Plot(Territory, i, j, Color.Black); }
           }
+          //if (Board[i, j] == 0 && Shows)
+          //{
+          //  if (Intensity[i, j] > 0) ScGui.Plot(Connection, i, j, Color.Black);
+          //  if (Intensity[i, j] < 0) ScGui.Plot(Connection, i, j, Color.White);
+          //}
         }
+      }
+      if (Shows)
+      {
+        ScGui.Score($"Bouzy territory: Black {BlackTerritory}, White {WhiteTerritory}");
       }
     }
     public static int GroupsDefine()
