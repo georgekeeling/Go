@@ -83,7 +83,7 @@ namespace GoPlanner
 
       statusM = new StatusM(TSTextBox2);
       statusM.Set("Click somewhere or File / Open");
-      TSTextBox2.Width = toolStrip2.Width - TSTextBox1.Width - 50;
+      CalcTSTextBox2Width();
       blackCursor = SetCustomCursor("cursor-black");
       whiteCursor = SetCustomCursor("cursor-white");
 
@@ -242,7 +242,32 @@ namespace GoPlanner
       panelMain.Invalidate();
       CalcPrSliderlWidth();
       prSLider.Invalidate();
-      TSTextBox2.Width = toolStrip2.Width - TSTextBox1.Width - 50;
+      CalcTSTextBox2Width();
+    }
+    private void CalcTSTextBox2Width()
+    {
+      if (!gameInProgress)
+      {
+        TSTextBox2.Width = toolStrip2.Width - TSTextBox1.Width - 50;
+        YouName.Visible = false;
+        YouMainTime.Visible = false;
+        YouColor.Visible = false;
+        OpponentName.Visible = false;
+        OpponentMainTime.Visible = false;
+        OpponentColor.Visible = false;
+      }
+      else
+      {
+        YouName.Visible = true;
+        YouMainTime.Visible = true;
+        YouColor.Visible = true;
+        OpponentName.Visible = true;
+        OpponentMainTime.Visible = true;
+        OpponentColor.Visible = true;
+        TSTextBox2.Width = toolStrip2.Width - TSTextBox1.Width - 50 -
+          YouName.Width - YouMainTime.Width - YouColor.Width -
+          OpponentName.Width - OpponentMainTime.Width - OpponentColor.Width;
+      }
     }
     private void PanelMain_KeyPress(object sender, KeyPressEventArgs e)
     {
@@ -1077,12 +1102,6 @@ namespace GoPlanner
       ct.Show();
     }
 
-    private void StartGameToolStripMenuItem_Click(object sender, EventArgs e)
-    {
-      GameSetUp gameSetUp = new GameSetUp(this);
-      gameSetUp.ShowDialog();
-      string test = gameSetUp.PlayerName.Text;
-    }
   }
   [Serializable]          // must be [Serializable] for copy / paste. 
   public class AStone

@@ -72,6 +72,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GameSetUp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -228,6 +231,9 @@
     <None Include="img\rotate-left_2.png" />
     <None Include="img\rotate-right_2.png" />
     <None Include="img\fast-forward_46x46.png" />
+    <None Include="img\pass.png" />
+    <None Include="img\StoneWhite.png" />
+    <None Include="img\StoneBlack.png" />
     <Content Include="img\think_idea_work_mind_thinking_icon_192534.ico" />
   </ItemGroup>
   <ItemGroup>

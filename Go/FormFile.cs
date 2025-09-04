@@ -208,19 +208,25 @@ namespace GoPlanner
     {
       openToolStripMenuItem_Click(sender, e);
     }
+    private bool CheckSafety (string action)
+    {
+      if (undos + redos > 0)
+      {
+        int reply = -1;
+        string theMessage = "All previous undos / redos.";
+        theMessage += "\r\nThis is not undoable!";
+        theMessage += "\r\nFor safety use File / New, then " + action + ".";
+        new MyMessageBox(theMessage, action + ": Warning", ref reply, "Continue", "Cancel", "", this);
+        if (reply == 2) { return false; }
+      }
+      return true;
+    }
     private void openToolStripMenuItem_Click(object sender, EventArgs e)
     {
       // Show the Open File dialog. If the user clicks OK, load the
       // pattern 
-      if (undos + redos > 0)
-      {
-        int reply = -1;
-        string theMessage = "All previous undos / redos will be removed.";
-        theMessage += "\r\nThis is not undoable!";
-        theMessage += "\r\nFor safety use File / New, then File / Open.";
-        new MyMessageBox(theMessage, "File Open: Warning", ref reply,  "Continue" , "Cancel", "" , this);
-        if (reply == 2) { return; }
-      }
+      if (!CheckSafety("File / Open")) { return; }
+
       openFileDialog1.FileName = "";
       if (openFileDialog1.ShowDialog() == DialogResult.OK)
       {

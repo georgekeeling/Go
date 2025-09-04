@@ -61,12 +61,42 @@ namespace GoPlanner.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 05/02/2025  
+        ///   Looks up a localized string similar to 02/09/2025  
         ///.
         /// </summary>
         internal static string BuildDate {
             get {
                 return ResourceManager.GetString("BuildDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pass {
+            get {
+                object obj = ResourceManager.GetObject("pass", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StoneBlack {
+            get {
+                object obj = ResourceManager.GetObject("StoneBlack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StoneWhite {
+            get {
+                object obj = ResourceManager.GetObject("StoneWhite", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

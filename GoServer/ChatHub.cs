@@ -36,7 +36,7 @@ namespace SignalRChat.Hubs
         }
         else
         {
-          Debug.WriteLine("removing" + testUser.Name);
+          Debug.WriteLine("removing " + testUser.Name);
           opponent = testUser.Opponent;
           Users.Remove(testUser);   // remove user from list
           if (opponent != "")
@@ -91,7 +91,8 @@ namespace SignalRChat.Hubs
         await Clients.Caller.SendAsync("NameHadError");
       }
     }
-    public async Task Challenge(string playerName, string opponentName)
+    public async Task Challenge(string playerName, string opponentName, 
+      string hours, string minutes, bool undosAllowed, string playerColour)
     {
       // player is issuing challenge to opponent
       // 1. check opponent exists and is not already playing
@@ -116,7 +117,8 @@ namespace SignalRChat.Hubs
       else
       {
         await Clients.Caller.SendAsync("OpponentThinking");
-        await Clients.Client(testOpponent.ConnectionId).SendAsync("ChallengeIn", playerName);
+        await Clients.Client(testOpponent.ConnectionId).SendAsync("ChallengeIn", 
+          playerName, hours, minutes, undosAllowed, playerColour);
       }
     }
     public async Task AcceptChallenge(string opponentName, string playerName)
@@ -192,6 +194,75 @@ namespace SignalRChat.Hubs
       await Clients.Caller.SendAsync("pingBack", cID);           // that works
       // await Clients.Client(cID).SendAsync("pingBack", cID);   // that also works
     }
+    public async Task GameStart(string player1, string player2)
+    {
+      // send message to player2 that game is starting
+      var Users = Gls.users;
+      string lowerName2 = player2.ToLower();
+      User? testPlayer2 = Users.Find(x => (x.Name.ToLower() == lowerName2));
+      if (testPlayer2 != null)
+      {
+        Debug.WriteLine(">>> GameStart: sent to " + testPlayer2.Name);
+        LogUsers();
+        await Clients.Client(testPlayer2.ConnectionId).SendAsync("GameStarted");
+      }
+
+    }
+    public async Task ChangeColor(string player2, string newColor)
+    {
+      // send message to player2 that opponent has changed color
+      var Users = Gls.users;
+      string lowerName2 = player2.ToLower();
+      User? testPlayer2 = Users.Find(x => (x.Name.ToLower() == lowerName2));
+      if (testPlayer2 != null)
+      {
+        await Clients.Client(testPlayer2.ConnectionId).SendAsync("ColorChanged", newColor);
+      }
+    }
+    public async Task ChangeHours(string player2, string newHours)
+    {
+      // send message to player2 that opponent has changed hours
+      var Users = Gls.users;
+      string lowerName2 = player2.ToLower();
+      User? testPlayer2 = Users.Find(x => (x.Name.ToLower() == lowerName2));
+      if (testPlayer2 != null)
+      {
+        await Clients.Client(testPlayer2.ConnectionId).SendAsync("HoursChanged", newHours);
+      }
+    }
+    public async Task ChangeMinutes(string player2, string newMinutes)
+    {
+      // send message to player2 that opponent has changed minutes
+      var Users = Gls.users;
+      string lowerName2 = player2.ToLower();
+      User? testPlayer2 = Users.Find(x => (x.Name.ToLower() == lowerName2));
+      if (testPlayer2 != null)
+      {
+        await Clients.Client(testPlayer2.ConnectionId).SendAsync("MinutesChanged", newMinutes);
+      }
+    }
+    public async Task ChangeUndo(string player2, bool undosAllowed)
+    {
+      // send message to player2 that opponent has changed undosAllowed
+      var Users = Gls.users;
+      string lowerName2 = player2.ToLower();
+      User? testPlayer2 = Users.Find(x => (x.Name.ToLower() == lowerName2));
+      if (testPlayer2 != null)
+      {
+        await Clients.Client(testPlayer2.ConnectionId).SendAsync("UndoChanged", undosAllowed);
+      }
+    }
+    private void LogUsers()
+    {
+      // log all users to console 
+      var Users = Gls.users;
+      Debug.WriteLine(">>> Users: " + Users.Count);
+      foreach (var user in Users)
+      {
+        Debug.WriteLine("    " + user.Name +":" + user.ConnectionId + " Opponent: " + user.Opponent);
+      }
+    }
+
     // Test task: to be deleted
     public async Task TellMeGroups()
     {

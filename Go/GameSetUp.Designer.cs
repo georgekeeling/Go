@@ -41,6 +41,17 @@
       this.ServerError = new System.Windows.Forms.Label();
       this.NameError = new System.Windows.Forms.Label();
       this.OpponentError = new System.Windows.Forms.Label();
+      this.label4 = new System.Windows.Forms.Label();
+      this.PlayHours = new System.Windows.Forms.TextBox();
+      this.label5 = new System.Windows.Forms.Label();
+      this.label6 = new System.Windows.Forms.Label();
+      this.PlayMinutes = new System.Windows.Forms.TextBox();
+      this.label7 = new System.Windows.Forms.Label();
+      this.label8 = new System.Windows.Forms.Label();
+      this.AllowUndos = new System.Windows.Forms.CheckBox();
+      this.PlayerStone = new System.Windows.Forms.Button();
+      this.OpponentStone = new System.Windows.Forms.Button();
+      this.TimeError = new System.Windows.Forms.Label();
       this.SuspendLayout();
       // 
       // ServerStatus
@@ -72,8 +83,9 @@
       // PlayerName
       // 
       this.PlayerName.Location = new System.Drawing.Point(191, 100);
+      this.PlayerName.MaxLength = 10;
       this.PlayerName.Name = "PlayerName";
-      this.PlayerName.Size = new System.Drawing.Size(407, 31);
+      this.PlayerName.Size = new System.Drawing.Size(192, 31);
       this.PlayerName.TabIndex = 3;
       // 
       // ButtonTellServerName
@@ -99,8 +111,9 @@
       // OpponentName
       // 
       this.OpponentName.Location = new System.Drawing.Point(192, 181);
+      this.OpponentName.MaxLength = 10;
       this.OpponentName.Name = "OpponentName";
-      this.OpponentName.Size = new System.Drawing.Size(407, 31);
+      this.OpponentName.Size = new System.Drawing.Size(191, 31);
       this.OpponentName.TabIndex = 6;
       // 
       // label3
@@ -124,6 +137,7 @@
       // 
       // ButtonStart
       // 
+      this.ButtonStart.DialogResult = System.Windows.Forms.DialogResult.OK;
       this.ButtonStart.Location = new System.Drawing.Point(655, 513);
       this.ButtonStart.Name = "ButtonStart";
       this.ButtonStart.Size = new System.Drawing.Size(161, 44);
@@ -158,12 +172,131 @@
       this.OpponentError.TabIndex = 12;
       this.OpponentError.Text = "label4";
       // 
+      // label4
+      // 
+      this.label4.AutoSize = true;
+      this.label4.Location = new System.Drawing.Point(32, 284);
+      this.label4.Name = "label4";
+      this.label4.Size = new System.Drawing.Size(100, 25);
+      this.label4.TabIndex = 13;
+      this.label4.Text = "Play time";
+      // 
+      // PlayHours
+      // 
+      this.PlayHours.Location = new System.Drawing.Point(234, 278);
+      this.PlayHours.MaxLength = 2;
+      this.PlayHours.Name = "PlayHours";
+      this.PlayHours.Size = new System.Drawing.Size(36, 31);
+      this.PlayHours.TabIndex = 14;
+      this.PlayHours.Text = "99";
+      this.PlayHours.TextChanged += new System.EventHandler(this.PlayHours_TextChanged);
+      // 
+      // label5
+      // 
+      this.label5.AutoSize = true;
+      this.label5.Location = new System.Drawing.Point(186, 284);
+      this.label5.Name = "label5";
+      this.label5.Size = new System.Drawing.Size(42, 25);
+      this.label5.TabIndex = 15;
+      this.label5.Text = "hh:";
+      // 
+      // label6
+      // 
+      this.label6.AutoSize = true;
+      this.label6.Location = new System.Drawing.Point(296, 284);
+      this.label6.Name = "label6";
+      this.label6.Size = new System.Drawing.Size(52, 25);
+      this.label6.TabIndex = 17;
+      this.label6.Text = "mm:";
+      // 
+      // PlayMinutes
+      // 
+      this.PlayMinutes.Location = new System.Drawing.Point(347, 278);
+      this.PlayMinutes.MaxLength = 2;
+      this.PlayMinutes.Name = "PlayMinutes";
+      this.PlayMinutes.Size = new System.Drawing.Size(36, 31);
+      this.PlayMinutes.TabIndex = 16;
+      this.PlayMinutes.Text = "99";
+      this.PlayMinutes.TextChanged += new System.EventHandler(this.PlayMinutes_TextChanged);
+      // 
+      // label7
+      // 
+      this.label7.AutoSize = true;
+      this.label7.Location = new System.Drawing.Point(429, 284);
+      this.label7.Name = "label7";
+      this.label7.Size = new System.Drawing.Size(138, 25);
+      this.label7.TabIndex = 18;
+      this.label7.Text = "(each player)";
+      // 
+      // label8
+      // 
+      this.label8.AutoSize = true;
+      this.label8.Location = new System.Drawing.Point(31, 359);
+      this.label8.Name = "label8";
+      this.label8.Size = new System.Drawing.Size(131, 25);
+      this.label8.TabIndex = 19;
+      this.label8.Text = "Allow Undos";
+      // 
+      // AllowUndos
+      // 
+      this.AllowUndos.AutoSize = true;
+      this.AllowUndos.Checked = true;
+      this.AllowUndos.CheckState = System.Windows.Forms.CheckState.Checked;
+      this.AllowUndos.Location = new System.Drawing.Point(192, 359);
+      this.AllowUndos.Name = "AllowUndos";
+      this.AllowUndos.Size = new System.Drawing.Size(28, 27);
+      this.AllowUndos.TabIndex = 20;
+      this.AllowUndos.UseVisualStyleBackColor = true;
+      this.AllowUndos.CheckedChanged += new System.EventHandler(this.AllowUndos_CheckedChanged);
+      // 
+      // PlayerStone
+      // 
+      this.PlayerStone.BackColor = System.Drawing.Color.White;
+      this.PlayerStone.Image = global::GoPlanner.Properties.Resources.StoneBlack;
+      this.PlayerStone.Location = new System.Drawing.Point(417, 88);
+      this.PlayerStone.Name = "PlayerStone";
+      this.PlayerStone.Size = new System.Drawing.Size(50, 50);
+      this.PlayerStone.TabIndex = 21;
+      this.PlayerStone.UseVisualStyleBackColor = false;
+      this.PlayerStone.Click += new System.EventHandler(this.PlayerStone_Click);
+      // 
+      // OpponentStone
+      // 
+      this.OpponentStone.BackColor = System.Drawing.Color.White;
+      this.OpponentStone.Image = global::GoPlanner.Properties.Resources.StoneBlack;
+      this.OpponentStone.Location = new System.Drawing.Point(417, 174);
+      this.OpponentStone.Name = "OpponentStone";
+      this.OpponentStone.Size = new System.Drawing.Size(50, 50);
+      this.OpponentStone.TabIndex = 22;
+      this.OpponentStone.UseVisualStyleBackColor = false;
+      this.OpponentStone.Click += new System.EventHandler(this.OpponentStone_Click);
+      // 
+      // TimeError
+      // 
+      this.TimeError.AutoSize = true;
+      this.TimeError.Location = new System.Drawing.Point(191, 324);
+      this.TimeError.Name = "TimeError";
+      this.TimeError.Size = new System.Drawing.Size(70, 25);
+      this.TimeError.TabIndex = 23;
+      this.TimeError.Text = "label4";
+      // 
       // GameSetUp
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.CancelButton = this.ButtonCancel;
       this.ClientSize = new System.Drawing.Size(872, 574);
+      this.Controls.Add(this.TimeError);
+      this.Controls.Add(this.OpponentStone);
+      this.Controls.Add(this.PlayerStone);
+      this.Controls.Add(this.AllowUndos);
+      this.Controls.Add(this.label8);
+      this.Controls.Add(this.label7);
+      this.Controls.Add(this.label6);
+      this.Controls.Add(this.PlayMinutes);
+      this.Controls.Add(this.label5);
+      this.Controls.Add(this.PlayHours);
+      this.Controls.Add(this.label4);
       this.Controls.Add(this.OpponentError);
       this.Controls.Add(this.NameError);
       this.Controls.Add(this.ServerError);
@@ -201,5 +334,16 @@
     private System.Windows.Forms.Label OpponentError;
     public System.Windows.Forms.TextBox PlayerName;
     public System.Windows.Forms.TextBox OpponentName;
+    private System.Windows.Forms.Label label4;
+    private System.Windows.Forms.Label label5;
+    private System.Windows.Forms.Label label6;
+    private System.Windows.Forms.Label label7;
+    private System.Windows.Forms.Label label8;
+    private System.Windows.Forms.Button PlayerStone;
+    private System.Windows.Forms.Button OpponentStone;
+    private System.Windows.Forms.Label TimeError;
+    public System.Windows.Forms.TextBox PlayHours;
+    public System.Windows.Forms.TextBox PlayMinutes;
+    public System.Windows.Forms.CheckBox AllowUndos;
   }
 }
