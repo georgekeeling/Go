@@ -57,11 +57,11 @@ namespace GoPlanner
       Invalidate();
       if ((BRselX >= TLselX) && (BRselY >= TLselY))
       {
-        form1.EnableCutCopyEtc(true);
+        form1.EnableCutCopy(true);
       }
       else
       {
-        form1.EnableCutCopyEtc(false);
+        form1.EnableCutCopy(false);
       }
     }
     public void StartDrag()
@@ -116,7 +116,7 @@ namespace GoPlanner
       }
       TLselX = int.MaxValue;
       BRselX = int.MaxValue;
-      form1.EnableCutCopyEtc(false);
+      form1.EnableCutCopy(false);
     }
     public void SelectAll()
     {
@@ -125,7 +125,7 @@ namespace GoPlanner
       BRselX = form1.bSide - 1;
       BRselY = form1.bSide - 1;
       Invalidate();
-      form1.EnableCutCopyEtc(true);
+      form1.EnableCutCopy(true);
     }
     public void DrawSelRectagle (PaintEventArgs e)
     {

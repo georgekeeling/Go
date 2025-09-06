@@ -85,7 +85,7 @@ namespace GoPlanner
     private readonly string goClipType = "GoGK";
     private void InitCutCopyPaste() 
     {
-      EnableCutCopyEtc(false);
+      EnableCutCopy(false);
       DeleteToolStripMenuItem.Enabled = true;
       // detecting clipboard change is very complicated but possible after exhaustive research
       // https://stackoverflow.com/questions/621577/how-do-i-monitor-clipboard-changes-in-c
@@ -117,6 +117,7 @@ namespace GoPlanner
           Console.WriteLine("System.Windows.Clipboard.GetData failed");
         }
       }
+      if (gameInProgress) result = false;  // cannot paste during game
       pasteToolStripButton.Enabled = result;
       pasteToolStripMenuItem.Enabled = result;
       return result;
@@ -140,10 +141,11 @@ namespace GoPlanner
       }
       return true;
     }
-    public void EnableCutCopyEtc (bool enable)
+    public void EnableCutCopy (bool enable)
     {
       copyToolStripButton.Enabled = enable;
       copyToolStripMenuItem.Enabled = enable;
+      if (gameInProgress) enable = false;  // cannot cut during game
       cutToolStripButton.Enabled = enable;
       cutToolStripMenuItem.Enabled = enable;
     }

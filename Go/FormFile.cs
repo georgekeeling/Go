@@ -221,6 +221,32 @@ namespace GoPlanner
       }
       return true;
     }
+    private void ClearBoard(string titleEnd)
+    {
+      InitUndoRedo();
+      statusM.Clear();
+      ScGui.ResetImage();
+      thePoints = CreateStones(bSide, bSide);
+      ToolSCapturedBlacks.Text = "0";
+      ToolSCapturedWhites.Text = "0";
+      capturedBlacks = 0;
+      capturedWhites = 0;
+      warnings = "";
+      gameName = "";
+      author = "";
+      komi = 0.0;
+      handicap = 0;
+      gameResult = "";
+      rules = "";
+      Text = programTitle + ": " + titleEnd;
+      selection.Off();
+      panelMain.Invalidate();
+      prSLider.Invalidate();
+      // ********  save the initial state
+      savepatternName = gameName;
+      savepatternDescription = warnings;
+      saveauthor = author;
+    }
     private void openToolStripMenuItem_Click(object sender, EventArgs e)
     {
       // Show the Open File dialog. If the user clicks OK, load the
@@ -237,37 +263,14 @@ namespace GoPlanner
     public bool ReadFile1(string fullFileName, bool batch)
     {
       bool result = false;
-      InitUndoRedo();
-      statusM.Clear();
-      ScGui.ResetImage();
-      thePoints = CreateStones(bSide, bSide);
-      ToolSCapturedBlacks.Text = "0";
-      ToolSCapturedWhites.Text = "0";
-      capturedBlacks = 0;
-      capturedWhites = 0;
 
       StreamReader theFile = new StreamReader(fullFileName);
       fileName = Path.GetFileName(fullFileName);
       fileDirectory = Path.GetDirectoryName(fullFileName);
 
-      warnings = "";
-      gameName = "";
-      author = "";
-      komi = 0.0;
-      handicap = 0;
-      gameResult = "";
-      rules = "";
+      ClearBoard(fileName);
 
       result = ReadFile(theFile, batch);
-
-      Text = programTitle + ": " + fileName;
-      selection.Off();
-      panelMain.Invalidate();
-      prSLider.Invalidate();
-      // ********  save the initial state
-      savepatternName = gameName;
-      savepatternDescription = warnings;
-      saveauthor = author;
 
       theFile.Close();
 

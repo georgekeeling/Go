@@ -26,7 +26,7 @@ namespace GoPlanner
       redos = 0;
       redosWas = 0;
       
-      EnableControls();
+      EnableDoControls();
       for (int board = 0; board < maxDos; board++)
       {
         undoObjects[board] = new UndoRedoBuffer(this);
@@ -38,15 +38,24 @@ namespace GoPlanner
     }
     private void UndoToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      if (undos <= 0) { EnableControls(); return; } // something wrongly enabled
-      if (redos == 0) 
+      if (gameInProgress) 
       {
-        // current stae not saved yet, so
+        GameUndo();
+        return; 
+      }
+      UndoForReal();
+    }
+    private void UndoForReal()
+    {
+      if (undos <= 0) { EnableDoControls(); return; } // something wrongly enabled
+      if (redos == 0)
+      {
+        // current state not saved yet, so
         SaveState2();
       }
       undos--;
       redos++;
-      EnableControls();
+      EnableDoControls();
       // copy out of undos and show
       RestoreBoard(undoObjects[undos]);
       RedCirclesAddOld();
@@ -57,11 +66,11 @@ namespace GoPlanner
     }
     private void RedoToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      if (redos <= 0) { EnableControls(); return; } // something wrongly enabled
+      if (redos <= 0) { EnableDoControls(); return; } // something wrongly enabled
       redos--;
       undos++;
       RedCirclesRemoveOld();
-      EnableControls();
+      EnableDoControls();
       RestoreBoard(undoObjects[undos]);
     }
     private void RestoreBoard(UndoRedoBuffer UndoRedoObject)
@@ -110,7 +119,7 @@ namespace GoPlanner
       undos++;
       redosWas = redos;
       redos = 0;
-      EnableControls();
+      EnableDoControls();
       // Console.WriteLine("SaveState by " + caller + ", redos were " + redosWas);
     }
     private void SaveState2()
@@ -136,7 +145,7 @@ namespace GoPlanner
       // state of board is left to caller
       undos--;
       redos = redosWas;
-      EnableControls();
+      EnableDoControls();
       // Console.WriteLine("UnSaveState by " + caller + ", redos were " + redosWas);
     }
     private void RedCirclesAddOld ()
@@ -177,7 +186,7 @@ namespace GoPlanner
       }
       return true;
     }
-    private void EnableControls()
+    private void EnableDoControls()
     {
       if (redos <= 0)
       {
@@ -188,9 +197,9 @@ namespace GoPlanner
       }
       else
       {
-        RedoToolStripMenuItem.Enabled = true;
-        RedoStripButton.Enabled = true;
-        Redo10StripButton.Enabled = true;
+        RedoToolStripMenuItem.Enabled = !gameInProgress;
+        RedoStripButton.Enabled = !gameInProgress;
+        Redo10StripButton.Enabled = !gameInProgress;
       }
       if (undos <= 0)
       {
@@ -201,9 +210,25 @@ namespace GoPlanner
       }
       else
       {
-        UndoToolStripMenuItem.Enabled = true;
-        UndoStripButton.Enabled = true;
-        Undo10StripButton.Enabled = true;
+        if (gameInProgress) 
+        {
+          if (playersTurn) 
+          { 
+            UndoToolStripMenuItem.Enabled = false; 
+            UndoStripButton.Enabled = false; 
+          }
+          else
+          {
+            UndoToolStripMenuItem.Enabled = allowUndos;
+            UndoStripButton.Enabled = allowUndos;
+          }
+        }
+        else 
+        {
+          UndoToolStripMenuItem.Enabled = true;
+          UndoStripButton.Enabled = true;
+        }
+        Undo10StripButton.Enabled = !gameInProgress;
       }
     }
     private void Undo10StripButton_Click(object sender, EventArgs e)
@@ -216,7 +241,7 @@ namespace GoPlanner
     }
     private void UndoMultiple(int howMany)
     {
-      if (undos <= 0) { EnableControls(); return; }
+      if (undos <= 0) { EnableDoControls(); return; }
       if (howMany > undos) { howMany = undos; }
       for (int i = 0; i < howMany; i++)
       {
@@ -225,7 +250,7 @@ namespace GoPlanner
     }
     private void RedoMultiple(int howMany)
     {
-      if (redos <= 0) { EnableControls(); return; }
+      if (redos <= 0) { EnableDoControls(); return; }
       if (howMany > redos) { howMany = redos; }
       for (int i = 0; i < howMany; i++)
       {

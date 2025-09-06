@@ -252,6 +252,66 @@ namespace SignalRChat.Hubs
         await Clients.Client(testPlayer2.ConnectionId).SendAsync("UndoChanged", undosAllowed);
       }
     }
+    public async Task MakeMove(int boardX, int boardY)
+    {
+      // send message to player2 that game is over
+      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+      if (OpponentID != "")
+      {
+        await Clients.Client(OpponentID).SendAsync("MakeMove" , boardX, boardY);
+      }
+    }
+    public async Task RequestUndo()
+    {
+      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+      if (OpponentID != "")
+      {
+        await Clients.Client(OpponentID).SendAsync("RequestUndo");
+      }
+    }
+    public async Task UndoGranted()
+    {
+      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+      if (OpponentID != "")
+      {
+        await Clients.Client(OpponentID).SendAsync("UndoGranted");
+      }
+    }
+    public async Task UndoDenied()
+    {
+      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+      if (OpponentID != "")
+      {
+        await Clients.Client(OpponentID).SendAsync("UndoDenied");
+      }
+    }
+    public async Task TickTock(string timeString)
+    {
+      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+      if (OpponentID != "")
+      {
+        await Clients.Client(OpponentID).SendAsync("TickTock", timeString);
+      }
+    }
+    private string GetOtherConnectionID(string connectionId1)
+    {
+      var Users = Gls.users;
+      User? fromPlayer = Users.Find(x => x.ConnectionId == connectionId1);
+      if (fromPlayer == null)
+      {
+        Debug.WriteLine(">>> GetOtherConnectionID: player not found");
+        LogUsers();
+        return "";
+      }
+      string player2 = fromPlayer.Opponent;
+      string lowerName2 = player2.ToLower();
+      User? testPlayer2 = Users.Find(x => (x.Name.ToLower() == lowerName2));
+      if (testPlayer2 != null)
+      {
+        return testPlayer2.ConnectionId;
+      }
+      return "";
+    }
     private void LogUsers()
     {
       // log all users to console 

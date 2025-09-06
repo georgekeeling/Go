@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace GoPlanner
 {
@@ -90,7 +91,7 @@ namespace GoPlanner
       LoadSettings();
       toolsOptions.InitLabels();
 
-      EnableCutCopyEtc(false);
+      EnableCutCopy(false);
       selection = new Selection(this);
 
       mouseMoveTimer = new System.Timers.Timer(500);
@@ -271,6 +272,7 @@ namespace GoPlanner
     }
     private void PanelMain_KeyPress(object sender, KeyPressEventArgs e)
     {
+      if (gameInProgress) return;
       // Key press only works if PanelMain has focus
       // https://stackoverflow.com/questions/2132130/how-to-get-keypress-event-in-windows-panel-control-in-c-sharp
       switch (e.KeyChar)
@@ -295,6 +297,7 @@ namespace GoPlanner
     }
     private void PanelMain_KeyDown(object sender, KeyEventArgs e)
     {
+      if (gameInProgress) return;
       switch (e.KeyCode)
       {
         case Keys.Left:
@@ -356,6 +359,11 @@ namespace GoPlanner
         {
           if (NearPoint(e.X, e.Y))
           {
+            if (gameInProgress)
+            {
+              MouseUpInGame(boardX, boardY);
+              return;
+            }
             string statusMess = "";
             SaveState("Mouse Up");
             if (thePoints[boardX, boardY].color == 0)
@@ -373,36 +381,8 @@ namespace GoPlanner
                 colorAdded = 2;
                 statusMess = "Black ";
               }
-              int captures = CountCaptures(boardX, boardY);
-              if (captures == 0)
-              {
-                // check for suicide
-                if (CountLiberties(boardX, boardY) == 0)
-                {
-                  // it is suicide. Not allowed. Rewind a bit
-                  thePoints[boardX, boardY].color = 0;
-                  UnSaveState("Mouse up suicide");
-                  new MyMessageBox("Suicide not allowed", this);
-                  return;
-                }
-              }
-              if (captures == 1)
-              {
-                // Check Ko. Temporarily remove prisoner
-                thePoints[firstPrisoner.X, firstPrisoner.Y].color = 0;
-                if (CheckForKo())
-                {
-                  thePoints[boardX, boardY].color = 0;
-                  thePoints[firstPrisoner.X, firstPrisoner.Y].color = (byte)(3 - colorAdded);
-                  UnSaveState("Mouse up Ko");
-                  new MyMessageBox("Ko not allowed", this);
-                  return;
-                }
-                thePoints[firstPrisoner.X, firstPrisoner.Y].color = (byte)(3 - colorAdded);
-              }
+              if (!ProcessMove(boardX, boardY, colorAdded)) return;
               statusMess += "played at " + toolsOptions.topLabels[boardX] + " " + toolsOptions.leftLabels[boardY];
-              thePoints[boardX, boardY].moveAdded = GetNextMoveNr();
-              ImprisonCaptures(boardX, boardY);
               if (TSBblackWhite.Checked)
               {
                 TSBblack.Checked = !TSBblack.Checked;
@@ -420,15 +400,52 @@ namespace GoPlanner
               thePoints[boardX, boardY].moveAdded = 0;
             }
             if (TSBblack.Checked) { statusMess += ". Black to play"; } else { statusMess += ". White to play"; }
-            statusM.Set(statusMess);
-            panelMain.Invalidate(PixRectFromBoardXY(boardX, boardY));
-            RedCirclesRemoveOld();
-            prSLider.Invalidate();
+            EndMove(boardX, boardY, statusMess);
           }
         }
         return;
       }
       mouseDragging = false;
+    }
+    private bool ProcessMove(int boardX, int boardY, byte colorAdded)
+    {
+      int captures = CountCaptures(boardX, boardY);
+      if (captures == 0)
+      {
+        // check for suicide
+        if (CountLiberties(boardX, boardY) == 0)
+        {
+          // it is suicide. Not allowed. Rewind a bit
+          thePoints[boardX, boardY].color = 0;
+          UnSaveState("Mouse up suicide");
+          new MyMessageBox("Suicide not allowed", this);
+          return false;
+        }
+      }
+      if (captures == 1)
+      {
+        // Check Ko. Temporarily remove prisoner
+        thePoints[firstPrisoner.X, firstPrisoner.Y].color = 0;
+        if (CheckForKo())
+        {
+          thePoints[boardX, boardY].color = 0;
+          thePoints[firstPrisoner.X, firstPrisoner.Y].color = (byte)(3 - colorAdded);
+          UnSaveState("Mouse up Ko");
+          new MyMessageBox("Ko not allowed", this);
+          return false;
+        }
+        thePoints[firstPrisoner.X, firstPrisoner.Y].color = (byte)(3 - colorAdded);
+      }
+      thePoints[boardX, boardY].moveAdded = GetNextMoveNr();
+      ImprisonCaptures(boardX, boardY);
+      return true;
+    }
+    private void EndMove(int boardX, int boardY, string message)
+    {
+      statusM.Set(message);
+      panelMain.Invalidate(PixRectFromBoardXY(boardX, boardY));
+      RedCirclesRemoveOld();
+      prSLider.Invalidate();
     }
     private short GetNextMoveNr()
     {
@@ -457,6 +474,7 @@ namespace GoPlanner
         boardY >= selection.TLy() && boardY <= selection.BRy())
       {
         // SaveState("Mouse down, commence move 1");
+        if (gameInProgress) { return; }
         selection.StartDrag();
         TLpasteCx = selection.TLx(); TLpasteCy = selection.TLy();
         BRpasteCx = selection.BRx(); BRpasteCy = selection.BRy();
@@ -483,6 +501,7 @@ namespace GoPlanner
       }
       // is a stone, select it and start moving it
       // SaveState("Mouse down, commence move 2");
+      if (gameInProgress) { return; }
       selection.UpdateRect(e.X, e.Y, e.X, e.Y);
       selection.StartDrag();
       TLpasteCx = boardX; TLpasteCy = boardY; BRpasteCx = boardX; BRpasteCy = boardY;

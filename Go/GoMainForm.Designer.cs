@@ -767,8 +767,8 @@
       // OpponentName
       // 
       this.OpponentName.Name = "OpponentName";
-      this.OpponentName.Size = new System.Drawing.Size(149, 34);
-      this.OpponentName.Text = "0123456789:";
+      this.OpponentName.Size = new System.Drawing.Size(144, 34);
+      this.OpponentName.Text = "0123456789";
       // 
       // OpponentColor
       // 
