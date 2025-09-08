@@ -187,13 +187,6 @@ namespace SignalRChat.Hubs
         await Clients.Client(testPlayer.ConnectionId).SendAsync(message);
       }
     }
-    public async Task Ping(string message)
-    {
-      var cID = Context.ConnectionId;
-      Debug.WriteLine(">>> ping " + message);
-      await Clients.Caller.SendAsync("pingBack", cID);           // that works
-      // await Clients.Client(cID).SendAsync("pingBack", cID);   // that also works
-    }
     public async Task GameStart(string player1, string player2)
     {
       // send message to player2 that game is starting
@@ -293,6 +286,42 @@ namespace SignalRChat.Hubs
         await Clients.Client(OpponentID).SendAsync("TickTock", timeString);
       }
     }
+    public async Task Pass()
+    {
+      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+      if (OpponentID != "")
+      {
+        await Clients.Client(OpponentID).SendAsync("Pass");
+      }
+    }
+    public async Task EndGame(string result)
+    {
+      // now clean up both players. Should not get called twice in rapid succession
+      // at end of game. 
+      var Users = Gls.users;
+      User? testPlayer = null; 
+      User? testOpponent = null; 
+      Debug.WriteLine(">>> GameOver: " + result + " Users " + Users.Count);
+      lock (Gls.usersLock)
+      {
+        string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+        testPlayer = Users.Find(x => x.ConnectionId == Context.ConnectionId);
+        if (testPlayer != null)
+        {
+          Users.Remove(testPlayer);   // remove user from list
+        }
+        if (OpponentID != "")
+        {
+          testOpponent = Users.Find(x => x.ConnectionId == OpponentID);
+          if (testOpponent != null)
+          {
+            Users.Remove(testOpponent);   // remove user from list
+          }
+        }
+      }
+    }
+
+    // Utility and test functions
     private string GetOtherConnectionID(string connectionId1)
     {
       var Users = Gls.users;
@@ -321,6 +350,13 @@ namespace SignalRChat.Hubs
       {
         Debug.WriteLine("    " + user.Name +":" + user.ConnectionId + " Opponent: " + user.Opponent);
       }
+    }
+    public async Task Ping(string message)
+    {
+      var cID = Context.ConnectionId;
+      Debug.WriteLine(">>> ping " + message);
+      await Clients.Caller.SendAsync("pingBack", cID);           // that works
+      // await Clients.Client(cID).SendAsync("pingBack", cID);   // that also works
     }
 
     // Test task: to be deleted

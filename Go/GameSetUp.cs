@@ -16,7 +16,6 @@ namespace GoPlanner
   public partial class GameSetUp : Form
   {
     public HubConnection connection;
-    private Func<Exception, Task> closedHandler;
     GoPlanner gp;
     public string playerColor = "B";   // B or W
     // gamester who accepted challenge cannot alter values 
@@ -100,7 +99,7 @@ namespace GoPlanner
         ServerError.Text = ex.Message;
       }
 
-      closedHandler = async (error) =>
+      gp.closedHandler = async (error) =>
       {
         // Default: if no action, connection is closed after 30s
         // If KeepAliveInterval & ServerTimeout set as above, connection does not
@@ -113,7 +112,7 @@ namespace GoPlanner
         Console.WriteLine("connection.Closed " + now.Minute + ":" + now.Second + " restarted after " + delay);
         await connection.StartAsync();
       };
-      connection.Closed += closedHandler;
+      connection.Closed += gp.closedHandler;
 
     }
     private async void ButtonTellServerName_Click(object sender, EventArgs e)
@@ -294,7 +293,7 @@ namespace GoPlanner
       else
       {
         //cancel or x clicked
-        connection.Closed -= closedHandler;
+        connection.Closed -= gp.closedHandler;
         await connection.StopAsync();
       }
     }
@@ -364,12 +363,15 @@ namespace GoPlanner
 
     private async void PlayHours_TextChanged(object sender, EventArgs e)
     {
-      if (PlayHours.Text == "") { return; }
-      if (!int.TryParse(PlayHours.Text, out int hours) || hours < 0)
+      if  (PlayHours.Text == " " || PlayHours.Text == "  ") PlayHours.Text = "";
+      if (PlayHours.Text != "") 
       {
-        PlayHours.Text = "";
-        TimeError.Text = "Hours must be positive 2 digit number";
-        return;
+        if (!int.TryParse(PlayHours.Text, out int hours) || hours < 0)
+        {
+          PlayHours.Text = "";
+          TimeError.Text = "Hours must be positive 2 digit number";
+          return;
+        }
       }
       TimeError.Text = "";
       if (setupState == 1)

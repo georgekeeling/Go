@@ -28,6 +28,7 @@
     /// </summary>
     private void InitializeComponent()
     {
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameSetUp));
       this.ServerStatus = new System.Windows.Forms.TextBox();
       this.label1 = new System.Windows.Forms.Label();
       this.label2 = new System.Windows.Forms.Label();
@@ -128,9 +129,9 @@
       // ButtonCancel
       // 
       this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.ButtonCancel.Location = new System.Drawing.Point(454, 514);
+      this.ButtonCancel.Location = new System.Drawing.Point(665, 508);
       this.ButtonCancel.Name = "ButtonCancel";
-      this.ButtonCancel.Size = new System.Drawing.Size(172, 44);
+      this.ButtonCancel.Size = new System.Drawing.Size(161, 44);
       this.ButtonCancel.TabIndex = 8;
       this.ButtonCancel.Text = "Cancel";
       this.ButtonCancel.UseVisualStyleBackColor = true;
@@ -138,7 +139,7 @@
       // ButtonStart
       // 
       this.ButtonStart.DialogResult = System.Windows.Forms.DialogResult.OK;
-      this.ButtonStart.Location = new System.Drawing.Point(655, 513);
+      this.ButtonStart.Location = new System.Drawing.Point(456, 508);
       this.ButtonStart.Name = "ButtonStart";
       this.ButtonStart.Size = new System.Drawing.Size(161, 44);
       this.ButtonStart.TabIndex = 9;
@@ -253,9 +254,9 @@
       // 
       this.PlayerStone.BackColor = System.Drawing.Color.White;
       this.PlayerStone.Image = global::GoPlanner.Properties.Resources.StoneBlack;
-      this.PlayerStone.Location = new System.Drawing.Point(417, 88);
+      this.PlayerStone.Location = new System.Drawing.Point(417, 93);
       this.PlayerStone.Name = "PlayerStone";
-      this.PlayerStone.Size = new System.Drawing.Size(50, 50);
+      this.PlayerStone.Size = new System.Drawing.Size(40, 40);
       this.PlayerStone.TabIndex = 21;
       this.PlayerStone.UseVisualStyleBackColor = false;
       this.PlayerStone.Click += new System.EventHandler(this.PlayerStone_Click);
@@ -264,9 +265,9 @@
       // 
       this.OpponentStone.BackColor = System.Drawing.Color.White;
       this.OpponentStone.Image = global::GoPlanner.Properties.Resources.StoneBlack;
-      this.OpponentStone.Location = new System.Drawing.Point(417, 174);
+      this.OpponentStone.Location = new System.Drawing.Point(417, 175);
       this.OpponentStone.Name = "OpponentStone";
-      this.OpponentStone.Size = new System.Drawing.Size(50, 50);
+      this.OpponentStone.Size = new System.Drawing.Size(40, 40);
       this.OpponentStone.TabIndex = 22;
       this.OpponentStone.UseVisualStyleBackColor = false;
       this.OpponentStone.Click += new System.EventHandler(this.OpponentStone_Click);
@@ -310,6 +311,7 @@
       this.Controls.Add(this.label2);
       this.Controls.Add(this.label1);
       this.Controls.Add(this.ServerStatus);
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.MaximizeBox = false;
       this.MinimizeBox = false;
       this.Name = "GameSetUp";

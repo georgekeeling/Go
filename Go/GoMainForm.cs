@@ -63,6 +63,7 @@ namespace GoPlanner
       InitFiles();
       InitPlayReplay();
       InitScoreControl();
+      EnableDisableBoard();
       prSLider.Invalidate();
 
       // could adjust registry here so that FriendlyAppName is programTitle....

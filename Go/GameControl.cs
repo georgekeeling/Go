@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Interop;
 using Windows.Media.Playback;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
@@ -20,8 +21,14 @@ namespace GoPlanner
     private int playerTimeLeft;
     private Timer playerTimer = new Timer();
     private bool allowUndos = true;
+    private int passCount = 0;
     HubConnection connection;
+    public Func<Exception, Task> closedHandler;
 
+    private void TSBsetupStart_Click(object sender, EventArgs e)
+    {
+      StartGameToolStripMenuItem_Click(sender, e);
+    }
     private void StartGameToolStripMenuItem_Click(object sender, EventArgs e)
     {
       if (!CheckSafety("Game / Start")) { return; }
@@ -45,8 +52,8 @@ namespace GoPlanner
         YouColor.Image = Properties.Resources.StoneBlack;
         OpponentColor.Image = Properties.Resources.StoneWhite;
       }
-      playerTimeLeft = int.Parse(gameSetUp.PlayHours.Text) * 3600 +
-        int.Parse(gameSetUp.PlayMinutes.Text) * 60;
+      int hours = gameSetUp.PlayHours.Text == "" ? 0 : int.Parse(gameSetUp.PlayHours.Text);
+      playerTimeLeft = hours * 3600 + int.Parse(gameSetUp.PlayMinutes.Text) * 60;
       playerTimer.Interval = 1000; // 1 second
       playerTimer.Tick += new EventHandler(ProcessTick);
       YouMainTime.Text = TimeSpan.FromSeconds(playerTimeLeft).ToString(@"hh\:mm\:ss");
@@ -56,6 +63,7 @@ namespace GoPlanner
       allowUndos = gameSetUp.AllowUndos.Checked;
       gameInProgress = true;
       CalcTSTextBox2Width();
+      TSBblackWhite.Checked = false;
       if (playerColor == 2)
       {
         statusM.Set("Game started. You to play.");
@@ -63,24 +71,31 @@ namespace GoPlanner
         panelMain.Cursor = blackCursor;
         playerTimer.Start();
         playerTimer.Enabled = true;
+        TSBblack.Checked = true;    // set these so htat undo does not change cursor color
+        TSBwhite.Checked = false;
       }
       else
       {
-        statusM.Set("Game started. " + OpponentName.Text.Remove(OpponentName.Text.Length - 1) + " playing.");
+        statusM.Set("Game started. " + GetOpponentName() + " playing.");
         playersTurn = false;
         panelMain.Cursor = whiteCursor;
         playerTimer.Start();
         playerTimer.Enabled = false;
+        TSBblack.Checked = false;    // set these so htat undo does not change cursor color
+        TSBwhite.Checked = true;
       }
       EnableDisableBoard();
+      passCount = 0;
       connection.On<int, int>("MakeMove", MakeMove);
       connection.On("UndoGranted", UndoGranted);
       connection.On("UndoDenied", UndoDenied);
       connection.On("RequestUndo", RequestUndo);
       connection.On<string>("TickTock", TickTock);
+      connection.On("Pass", Pass);
     }
-    private void PassToolStripMenuItem_Click(object sender, EventArgs e)
+    private string GetOpponentName()
     {
+      return OpponentName.Text.Remove(OpponentName.Text.Length - 1);
     }
     private void EnableDisableBoard()
     {
@@ -96,6 +111,9 @@ namespace GoPlanner
       CheckClipboardGo();   // looks after paste
       DeleteToolStripMenuItem.Enabled = !gameInProgress;
       StartGameToolStripMenuItem.Enabled = !gameInProgress;
+      TSBsetupStart.Enabled = !gameInProgress;
+      TSBpass.Enabled = gameInProgress && playersTurn;
+      PassToolStripMenuItem.Enabled = gameInProgress && playersTurn;
       TSBwhite.Enabled = !gameInProgress;
       TSBblack.Enabled = !gameInProgress;
       TSBblackWhite.Enabled = !gameInProgress;
@@ -117,14 +135,17 @@ namespace GoPlanner
       }
       thePoints[boardX, boardY].color = playerColor;
       if (!ProcessMove(boardX, boardY, playerColor)) return;
-      EndMove(boardX, boardY, OpponentName.Text.Remove(OpponentName.Text.Length - 1) + " to move");
+      EndMove(boardX, boardY, GetOpponentName() + " to move");
       SetPlayer(false);
+      passCount = 0;
       await connection.InvokeAsync("MakeMove", boardX, boardY);
     }
-    private void SetPlayer (bool x)
+    private void SetPlayer (bool playing)
     {
-      playersTurn = x;
-      playerTimer.Enabled = x;
+      playersTurn = playing;
+      playerTimer.Enabled = playing;
+      TSBpass.Enabled = playing;
+      PassToolStripMenuItem.Enabled = playing;
       EnableDoControls();
     }
     private void MakeMove(int boardX, int boardY)
@@ -140,12 +161,18 @@ namespace GoPlanner
       thePoints[boardX, boardY].color = oppColor;
       ProcessMove(boardX, boardY, oppColor);
       EndMove(boardX, boardY, "Your move");
+      passCount = 0;
       SetPlayer(true);
     }
     private async void GameUndo()
     {
       // if undos allowed, then ask opponent if ok
       // if not allowed should never get here as menu items disabled
+      if (passCount > 0)
+      {
+        statusM.Set("Undo not allowed after Pass.");
+        return;
+      }
       statusM.Set("Undo requested. Timers suspended.");
       await connection.InvokeAsync("RequestUndo");
     }
@@ -188,25 +215,72 @@ namespace GoPlanner
     private async void ProcessTick(object sender, EventArgs e)
     {
       if (playerTimeLeft > 0) playerTimeLeft--;
-      if (playerTimeLeft > 0)
+      YouMainTime.Text = TimeSpan.FromSeconds(playerTimeLeft).ToString(@"hh\:mm\:ss");
+      await connection.InvokeAsync("TickTock", YouMainTime.Text);
+      if (playerTimeLeft <= 0)    // <0 should be impossible
       {
-        YouMainTime.Text = TimeSpan.FromSeconds(playerTimeLeft).ToString(@"hh\:mm\:ss");
-        await connection.InvokeAsync("TickTock", YouMainTime.Text);
-      }
-      else
-      {
-        playerTimer.Stop();
-        gameInProgress = false;
-        EnableDisableBoard();
-        statusM.Set("Time up! You lose.");
-        MessageBox.Show("Your time has run out. You lose!", "Time up",
-          MessageBoxButtons.OK, MessageBoxIcon.Information);
+        EndGame(playerName + ", your time expired. " + GetOpponentName() + " wins!");
       }
     }
-    private void TickTock(string time)
+    private async void TickTock(string time)
     {
       if (InvokeRequired) { Invoke((Action)(() => TickTock(time))); return; }
       OpponentMainTime.Text = time;
+      if (time == "00:00:00")
+      {
+        string msg = GetOpponentName() + "'s time expired. " + playerName + ", you win!";
+        await connection.InvokeAsync("EndGame", msg);
+        EndGame(msg);
+      }
+    }
+    private void PassToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      TSBpass_Click(sender, e);
+    }
+    private async void TSBpass_Click(object sender, EventArgs e)
+    {
+      if (!gameInProgress || !playersTurn) return;
+      passCount++;
+      SetPlayer(false);
+      if (passCount == 1)
+      {
+        await connection.InvokeAsync("Pass");
+        statusM.Set("You passed. Opponent's turn.");
+      }
+      else
+      {
+        // passCount must be 2
+        await connection.InvokeAsync("Pass");
+        EndGame(playerName + " and " + GetOpponentName() + " passed. Game over.");
+      }
+    }
+    private async void Pass()
+    {
+      // opponent has passed
+      if (InvokeRequired) { Invoke((Action)(() => Pass())); return; }
+      passCount++;
+      if (passCount == 1)
+      {
+        statusM.Set("Opponent passed. Your turn. Game ends if you pass.");
+        SetPlayer(true);
+      }
+      else
+      {
+        // passCount must be 2
+        string msg = playerName + " and " + GetOpponentName() + " passed. Game over.";
+        await connection.InvokeAsync("EndGame", msg);
+        EndGame(msg);
+      }
+    }
+    private async void EndGame(string msg) {       
+      gameInProgress = false;
+      playerTimer.Stop();
+      playerTimer.Enabled = false;
+      statusM.Set(msg);
+      EnableDisableBoard();
+      connection.Closed -= closedHandler;
+      await connection.StopAsync();
+      new MyMessageBox(msg, "Game over", this);
     }
   }
 }

@@ -63,6 +63,10 @@ namespace GoPlanner
       e.Graphics.FillPolygon(brush, star);
     }
 
+    private void TSBscore_Click(object sender, EventArgs e)
+    {
+      ScoreToolStripMenuItem_Click(sender, e);
+    }
 
     private void ScoreToolStripMenuItem_Click(object sender, EventArgs e)
     {
