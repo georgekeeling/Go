@@ -33,7 +33,10 @@ namespace GoPlanner
     {
       if (!CheckSafety("Game / Start")) { return; }
       GameSetUp gameSetUp = new GameSetUp(this);
-      if (gameSetUp.ShowDialog() == DialogResult.Cancel) { return; }
+      if (gameSetUp.ShowDialog() == DialogResult.Cancel) { 
+        gameSetUp.Dispose();
+        return; 
+      }
       // game has started, black is playing
       ClearBoard(gameSetUp.PlayerName.Text + " plays " + gameSetUp.OpponentName.Text);
 
@@ -86,12 +89,14 @@ namespace GoPlanner
       }
       EnableDisableBoard();
       passCount = 0;
+      connection.On("OpponentDeparted", OpponentDepartedInGame);
       connection.On<int, int>("MakeMove", MakeMove);
       connection.On("UndoGranted", UndoGranted);
       connection.On("UndoDenied", UndoDenied);
       connection.On("RequestUndo", RequestUndo);
       connection.On<string>("TickTock", TickTock);
       connection.On("Pass", Pass);
+      gameSetUp.Dispose();
     }
     private string GetOpponentName()
     {
@@ -281,6 +286,11 @@ namespace GoPlanner
       connection.Closed -= closedHandler;
       await connection.StopAsync();
       new MyMessageBox(msg, "Game over", this);
+    }
+    private void OpponentDepartedInGame()
+    {
+      if (InvokeRequired) { Invoke((Action)OpponentDepartedInGame); return; }
+      EndGame(OpponentName.Text + " has departed. You win.");
     }
   }
 }

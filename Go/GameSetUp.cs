@@ -29,6 +29,7 @@ namespace GoPlanner
       StartPosition = FormStartPosition.CenterParent;
       PlayerName.Text = Properties.Settings.Default.playerName;
       OpponentName.Text = Properties.Settings.Default.opponentName;
+      ButtonTellServerName.Enabled = false;
       ButtonTellServerOpponent.Enabled = false;
       PlayHours.Text = Properties.Settings.Default.playHours;
       PlayMinutes.Text = Properties.Settings.Default.playMinutes;
@@ -70,7 +71,13 @@ namespace GoPlanner
           .Build();
       Console.WriteLine("GameSetUp_Load " + connection.ConnectionId);
       // see racingDemon main.ts & Program.cs for setting these
-      const int kAIsecs = 100;
+      // originally KAIsecs was 100 and connection closed about every 40 seconds
+      // when gp.closedHandler was called
+      // reduced kAIsecs to 20s and connection remains open :-)
+      // this only happened on live server in release mode.
+      // By setting Go/Properties/Application/Output Type from Windows Application to Console Application
+      // I can see console messages, specially from gp.closedHandler
+      const int kAIsecs = 20;
       connection.KeepAliveInterval = TimeSpan.FromSeconds(kAIsecs);
       connection.ServerTimeout = TimeSpan.FromSeconds(2 * kAIsecs);
       try
@@ -79,6 +86,7 @@ namespace GoPlanner
         ServerStatus.Text = "Connected to " + server;
         ServerError.Text = "✓";
         ButtonTellServerName.Enabled = true;
+        // All handlers should be removed when dialog is closed
         connection.On("NameOK", NameOK);
         connection.On("NameHadError", NameHadError);
         connection.On("OpponentUnavailable", OpponentUnavailable);
@@ -283,6 +291,19 @@ namespace GoPlanner
     private async void GameSetUp_FormClosing(object sender, FormClosingEventArgs e)
     {
       Console.WriteLine("GameSetUp_FormClosing " + DialogResult);
+      connection.Remove("NameOK");
+      connection.Remove("NameHadError");
+      connection.Remove("OpponentUnavailable");
+      connection.Remove("OpponentThinking");
+      connection.Remove("ChallengeIn");
+      connection.Remove("OpponentDeparted");
+      connection.Remove("ChallengeAccepted");
+      connection.Remove("ChallengeDeclined");
+      connection.Remove("GameStarted");
+      connection.Remove("ColorChanged");
+      connection.Remove("HoursChanged");
+      connection.Remove("MinutesChanged");
+      connection.Remove("UndoChanged");
       if (DialogResult == DialogResult.OK) 
       {
         // game start clicked
