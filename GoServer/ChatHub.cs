@@ -198,6 +198,7 @@ namespace SignalRChat.Hubs
         Debug.WriteLine(">>> GameStart: sent to " + testPlayer2.Name);
         LogUsers();
         await Clients.Client(testPlayer2.ConnectionId).SendAsync("GameStarted");
+        await LogSomething("Game started between " + player1 + " and " + player2);
       }
 
     }
@@ -294,20 +295,22 @@ namespace SignalRChat.Hubs
         await Clients.Client(OpponentID).SendAsync("Pass");
       }
     }
-    public async Task EndGame(string result)
+    public async Task EndGameKillUsers(string result)
     {
       // now clean up both players. Should not get called twice in rapid succession
       // at end of game. 
       var Users = Gls.users;
+      string logMessage = "EndGameKillUsers: ";
       User? testPlayer = null; 
       User? testOpponent = null; 
-      Debug.WriteLine(">>> GameOver: " + result + " Users " + Users.Count);
+      Debug.WriteLine(">>> EndGameKillUsers: " + result + " Users " + Users.Count);
       lock (Gls.usersLock)
       {
         string OpponentID = GetOtherConnectionID(Context.ConnectionId);
         testPlayer = Users.Find(x => x.ConnectionId == Context.ConnectionId);
         if (testPlayer != null)
         {
+          logMessage += "killed player " + testPlayer.Name + " ";
           Users.Remove(testPlayer);   // remove user from list
         }
         if (OpponentID != "")
@@ -315,13 +318,27 @@ namespace SignalRChat.Hubs
           testOpponent = Users.Find(x => x.ConnectionId == OpponentID);
           if (testOpponent != null)
           {
+            logMessage += "killed opponent " + testOpponent.Name + " ";
             Users.Remove(testOpponent);   // remove user from list
           }
         }
       }
+      Debug.WriteLine(">>> EndGameKillUsers2: " + result + " Users " + Users.Count);
+      await LogSomething(logMessage);
     }
-
+    public async Task Resign()
+    {
+      // send message to player2 that game is over
+      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+      if (OpponentID != "")
+      {
+        await Clients.Client(OpponentID).SendAsync("OpponentResigned");
+      }
+      await Clients.Caller.SendAsync("YouResigned");
+    }
+    /////////////////////////////////////////////////////////////////////
     // Utility and test functions
+    /////////////////////////////////////////////////////////////////////
     private string GetOtherConnectionID(string connectionId1)
     {
       var Users = Gls.users;
@@ -349,6 +366,31 @@ namespace SignalRChat.Hubs
       foreach (var user in Users)
       {
         Debug.WriteLine("    " + user.Name +":" + user.ConnectionId + " Opponent: " + user.Opponent);
+      }
+    }
+    public async Task LogSomething(string message)
+    {
+      // log message to repos\Go\logs\go.log in debug or
+      // /logs/go.log on server
+      try
+      {
+        using StreamWriter outputFile = new StreamWriter("../logs/go.log", true);
+        {
+          DateTime localDate = DateTime.Now;
+          string showTime = localDate.ToString("yy-MM-dd HH:mm:ss");
+          if (message != "")
+          {
+            await outputFile.WriteAsync(Environment.NewLine + showTime + " " + message);
+          }
+          else
+          {
+            await outputFile.WriteAsync(Environment.NewLine);
+          }
+        }
+      }
+      catch (Exception e)
+      {
+        Debug.WriteLine(">>> Error in LogMessage: " + e.ToString());
       }
     }
     public async Task Ping(string message)

@@ -96,6 +96,8 @@ namespace GoPlanner
       connection.On("RequestUndo", RequestUndo);
       connection.On<string>("TickTock", TickTock);
       connection.On("Pass", Pass);
+      connection.On("OpponentResigned", OpponentResigned);
+      connection.On("YouResigned", YouResigned);
       gameSetUp.Dispose();
     }
     private string GetOpponentName()
@@ -117,12 +119,15 @@ namespace GoPlanner
       DeleteToolStripMenuItem.Enabled = !gameInProgress;
       StartGameToolStripMenuItem.Enabled = !gameInProgress;
       TSBsetupStart.Enabled = !gameInProgress;
-      TSBpass.Enabled = gameInProgress && playersTurn;
-      PassToolStripMenuItem.Enabled = gameInProgress && playersTurn;
       TSBwhite.Enabled = !gameInProgress;
       TSBblack.Enabled = !gameInProgress;
       TSBblackWhite.Enabled = !gameInProgress;
       TSBnone.Enabled = !gameInProgress;
+
+      TSBpass.Enabled = gameInProgress && playersTurn;
+      PassToolStripMenuItem.Enabled = TSBpass.Enabled;
+      ResignToolStripMenuItem.Enabled = TSBpass.Enabled;
+      TSBresign.Enabled = TSBpass.Enabled;
     }
     private async void MouseUpInGame(int boardX, int boardY)
     {
@@ -151,6 +156,8 @@ namespace GoPlanner
       playerTimer.Enabled = playing;
       TSBpass.Enabled = playing;
       PassToolStripMenuItem.Enabled = playing;
+      ResignToolStripMenuItem.Enabled = playing;
+      TSBresign.Enabled = playing;
       EnableDoControls();
     }
     private void MakeMove(int boardX, int boardY)
@@ -173,6 +180,7 @@ namespace GoPlanner
     {
       // if undos allowed, then ask opponent if ok
       // if not allowed should never get here as menu items disabled
+      if (InvokeRequired) { Invoke((Action)(() => GameUndo())); return; }
       if (passCount > 0)
       {
         statusM.Set("Undo not allowed after Pass.");
@@ -273,11 +281,12 @@ namespace GoPlanner
       {
         // passCount must be 2
         string msg = playerName + " and " + GetOpponentName() + " passed. Game over.";
-        await connection.InvokeAsync("EndGame", msg);
+        await connection.InvokeAsync("EndGameKillUsers", msg);
         EndGame(msg);
       }
     }
-    private async void EndGame(string msg) {       
+    private async void EndGame(string msg) 
+    {       
       gameInProgress = false;
       playerTimer.Stop();
       playerTimer.Enabled = false;
@@ -290,7 +299,29 @@ namespace GoPlanner
     private void OpponentDepartedInGame()
     {
       if (InvokeRequired) { Invoke((Action)OpponentDepartedInGame); return; }
-      EndGame(OpponentName.Text + " has departed. You win.");
+      EndGame(GetOpponentName() + " has departed. You win.");
+    }
+    private void ResignToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      TSBresign_Click(sender, e);
+    }
+
+    private async void TSBresign_Click(object sender, EventArgs e)
+    {
+      await connection.InvokeAsync("Resign");
+    }
+    private async void OpponentResigned()
+    {
+      if (InvokeRequired) { Invoke((Action)(() => OpponentResigned())); return; }
+      string msg = GetOpponentName() + " resigned. You win!";
+      await connection.InvokeAsync("EndGameKillUsers", msg);
+      EndGame(msg);
+    }
+    private void YouResigned()
+    {
+      if (InvokeRequired) { Invoke((Action)(() => YouResigned())); return; }
+      string msg = "You resigned. " + GetOpponentName() + " wins.";
+      EndGame(msg);
     }
   }
 }

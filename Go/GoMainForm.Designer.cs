@@ -47,6 +47,7 @@
       this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
       this.TSBsetupStart = new System.Windows.Forms.ToolStripButton();
       this.TSBpass = new System.Windows.Forms.ToolStripButton();
+      this.TSBresign = new System.Windows.Forms.ToolStripButton();
       this.TSBscore = new System.Windows.Forms.ToolStripButton();
       this.TSBremovals = new System.Windows.Forms.ToolStripButton();
       this.TSBterritories = new System.Windows.Forms.ToolStripButton();
@@ -84,6 +85,7 @@
       this.StartGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.PassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.ScoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.ResignToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
@@ -141,6 +143,7 @@
             this.toolStripSeparator8,
             this.TSBsetupStart,
             this.TSBpass,
+            this.TSBresign,
             this.TSBscore,
             this.TSBremovals,
             this.TSBterritories,
@@ -298,6 +301,16 @@
       this.TSBpass.Text = "toolStripButton1";
       this.TSBpass.ToolTipText = "Pass";
       this.TSBpass.Click += new System.EventHandler(this.TSBpass_Click);
+      // 
+      // TSBresign
+      // 
+      this.TSBresign.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.TSBresign.Image = global::GoPlanner.Properties.Resources.white_flag;
+      this.TSBresign.ImageTransparentColor = System.Drawing.Color.Magenta;
+      this.TSBresign.Name = "TSBresign";
+      this.TSBresign.Size = new System.Drawing.Size(46, 34);
+      this.TSBresign.Text = "Resign";
+      this.TSBresign.Click += new System.EventHandler(this.TSBresign_Click);
       // 
       // TSBscore
       // 
@@ -622,7 +635,8 @@
       this.gameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StartGameToolStripMenuItem,
             this.PassToolStripMenuItem,
-            this.ScoreToolStripMenuItem});
+            this.ScoreToolStripMenuItem,
+            this.ResignToolStripMenuItem});
       this.gameToolStripMenuItem.Name = "gameToolStripMenuItem";
       this.gameToolStripMenuItem.Size = new System.Drawing.Size(96, 36);
       this.gameToolStripMenuItem.Text = "&Game";
@@ -654,6 +668,14 @@
       this.ScoreToolStripMenuItem.Text = "Score";
       this.ScoreToolStripMenuItem.Click += new System.EventHandler(this.ScoreToolStripMenuItem_Click);
       // 
+      // ResignToolStripMenuItem
+      // 
+      this.ResignToolStripMenuItem.Image = global::GoPlanner.Properties.Resources.white_flag;
+      this.ResignToolStripMenuItem.Name = "ResignToolStripMenuItem";
+      this.ResignToolStripMenuItem.Size = new System.Drawing.Size(336, 44);
+      this.ResignToolStripMenuItem.Text = "Resign";
+      this.ResignToolStripMenuItem.Click += new System.EventHandler(this.ResignToolStripMenuItem_Click);
+      // 
       // toolsToolStripMenuItem
       // 
       this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -668,20 +690,20 @@
       // optionsToolStripMenuItem
       // 
       this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-      this.optionsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.optionsToolStripMenuItem.Size = new System.Drawing.Size(269, 44);
       this.optionsToolStripMenuItem.Text = "&Options";
       this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
       // 
       // toolStripSeparator11
       // 
       this.toolStripSeparator11.Name = "toolStripSeparator11";
-      this.toolStripSeparator11.Size = new System.Drawing.Size(356, 6);
+      this.toolStripSeparator11.Size = new System.Drawing.Size(266, 6);
       // 
       // refreshToolStripMenuItem
       // 
       this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
       this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-      this.refreshToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.refreshToolStripMenuItem.Size = new System.Drawing.Size(269, 44);
       this.refreshToolStripMenuItem.Text = "Refresh";
       this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
       // 
@@ -689,7 +711,7 @@
       // 
       this.TestToolStripMenuItem.Name = "TestToolStripMenuItem";
       this.TestToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-      this.TestToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.TestToolStripMenuItem.Size = new System.Drawing.Size(269, 44);
       this.TestToolStripMenuItem.Text = "Test";
       this.TestToolStripMenuItem.Click += new System.EventHandler(this.TestToolStripMenuItem_Click);
       // 
@@ -904,6 +926,8 @@
     private System.Windows.Forms.ToolStripButton OpponentColor;
     private System.Windows.Forms.ToolStripButton TSBsetupStart;
     private System.Windows.Forms.ToolStripButton TSBscore;
+    private System.Windows.Forms.ToolStripMenuItem ResignToolStripMenuItem;
+    private System.Windows.Forms.ToolStripButton TSBresign;
   }
 }
 

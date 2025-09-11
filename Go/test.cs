@@ -14,7 +14,7 @@ namespace GoPlanner
   {
     private void TestToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      ModScore.N1++;
+      openToolStripMenuItem_Click(sender, e);
     }
     private void TestBouzy()
     {

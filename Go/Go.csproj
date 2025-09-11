@@ -226,6 +226,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="img\white-flag.png" />
     <None Include="Properties\BuildDate.txt" />
     <EmbeddedResource Include="img\cursor-black.png" />
     <EmbeddedResource Include="img\cursor-white.png" />
