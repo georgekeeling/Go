@@ -240,6 +240,7 @@
     <None Include="img\StoneBlack.png" />
     <None Include="img\settings.png" />
     <None Include="img\score.png" />
+    <None Include="img\AllWhite.png" />
     <Content Include="img\think_idea_work_mind_thinking_icon_192534.ico" />
   </ItemGroup>
   <ItemGroup>
