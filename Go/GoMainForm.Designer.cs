@@ -125,7 +125,6 @@
       // 
       // toolStrip1
       // 
-      this.toolStrip1.AutoSize = false;
       this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
       this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripButton,
@@ -156,9 +155,10 @@
             this.UndoStripButton,
             this.RedoStripButton,
             this.Redo10StripButton});
+      this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
       this.toolStrip1.Location = new System.Drawing.Point(0, 40);
       this.toolStrip1.Name = "toolStrip1";
-      this.toolStrip1.Size = new System.Drawing.Size(1195, 40);
+      this.toolStrip1.Size = new System.Drawing.Size(1195, 39);
       this.toolStrip1.TabIndex = 1;
       this.toolStrip1.Text = "toolStrip1";
       // 
@@ -168,7 +168,7 @@
       this.newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripButton.Image")));
       this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.newToolStripButton.Name = "newToolStripButton";
-      this.newToolStripButton.Size = new System.Drawing.Size(46, 34);
+      this.newToolStripButton.Size = new System.Drawing.Size(46, 28);
       this.newToolStripButton.Text = "&New";
       this.newToolStripButton.Click += new System.EventHandler(this.newToolStripButton_Click);
       // 
@@ -178,7 +178,7 @@
       this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
       this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.openToolStripButton.Name = "openToolStripButton";
-      this.openToolStripButton.Size = new System.Drawing.Size(46, 34);
+      this.openToolStripButton.Size = new System.Drawing.Size(46, 28);
       this.openToolStripButton.Text = "&Open";
       this.openToolStripButton.Click += new System.EventHandler(this.openToolStripButton_Click);
       // 
@@ -188,14 +188,14 @@
       this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
       this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.saveToolStripButton.Name = "saveToolStripButton";
-      this.saveToolStripButton.Size = new System.Drawing.Size(46, 34);
+      this.saveToolStripButton.Size = new System.Drawing.Size(46, 28);
       this.saveToolStripButton.Text = "&Save";
       this.saveToolStripButton.Click += new System.EventHandler(this.saveToolStripButton_Click);
       // 
       // toolStripSeparator6
       // 
       this.toolStripSeparator6.Name = "toolStripSeparator6";
-      this.toolStripSeparator6.Size = new System.Drawing.Size(6, 40);
+      this.toolStripSeparator6.Size = new System.Drawing.Size(6, 23);
       // 
       // cutToolStripButton
       // 
@@ -203,7 +203,7 @@
       this.cutToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("cutToolStripButton.Image")));
       this.cutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.cutToolStripButton.Name = "cutToolStripButton";
-      this.cutToolStripButton.Size = new System.Drawing.Size(46, 34);
+      this.cutToolStripButton.Size = new System.Drawing.Size(46, 28);
       this.cutToolStripButton.Text = "C&ut";
       this.cutToolStripButton.Click += new System.EventHandler(this.cutToolStripButton_Click);
       // 
@@ -213,7 +213,7 @@
       this.copyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripButton.Image")));
       this.copyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.copyToolStripButton.Name = "copyToolStripButton";
-      this.copyToolStripButton.Size = new System.Drawing.Size(46, 34);
+      this.copyToolStripButton.Size = new System.Drawing.Size(46, 28);
       this.copyToolStripButton.Text = "&Copy";
       this.copyToolStripButton.Click += new System.EventHandler(this.copyToolStripButton_Click);
       // 
@@ -223,14 +223,14 @@
       this.pasteToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("pasteToolStripButton.Image")));
       this.pasteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.pasteToolStripButton.Name = "pasteToolStripButton";
-      this.pasteToolStripButton.Size = new System.Drawing.Size(46, 34);
+      this.pasteToolStripButton.Size = new System.Drawing.Size(46, 28);
       this.pasteToolStripButton.Text = "&Paste";
       this.pasteToolStripButton.Click += new System.EventHandler(this.pasteToolStripButton_Click);
       // 
       // toolStripSeparator2
       // 
       this.toolStripSeparator2.Name = "toolStripSeparator2";
-      this.toolStripSeparator2.Size = new System.Drawing.Size(6, 40);
+      this.toolStripSeparator2.Size = new System.Drawing.Size(6, 23);
       // 
       // TSBwhite
       // 
@@ -240,7 +240,7 @@
       this.TSBwhite.Image = global::GoPlanner.Properties.Resources.StoneWhite;
       this.TSBwhite.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.TSBwhite.Name = "TSBwhite";
-      this.TSBwhite.Size = new System.Drawing.Size(46, 34);
+      this.TSBwhite.Size = new System.Drawing.Size(46, 28);
       this.TSBwhite.Text = "Add white stones";
       this.TSBwhite.Click += new System.EventHandler(this.TSBwhite_Click);
       // 
@@ -250,7 +250,7 @@
       this.TSBblack.Image = global::GoPlanner.Properties.Resources.StoneBlack;
       this.TSBblack.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.TSBblack.Name = "TSBblack";
-      this.TSBblack.Size = new System.Drawing.Size(46, 34);
+      this.TSBblack.Size = new System.Drawing.Size(46, 28);
       this.TSBblack.Text = "Add black stones";
       this.TSBblack.Click += new System.EventHandler(this.TSBblack_Click);
       // 
@@ -261,7 +261,7 @@
       this.TSBblackWhite.Image = ((System.Drawing.Image)(resources.GetObject("TSBblackWhite.Image")));
       this.TSBblackWhite.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.TSBblackWhite.Name = "TSBblackWhite";
-      this.TSBblackWhite.Size = new System.Drawing.Size(46, 34);
+      this.TSBblackWhite.Size = new System.Drawing.Size(46, 28);
       this.TSBblackWhite.Text = "Add Alternating Black / WHite";
       this.TSBblackWhite.Click += new System.EventHandler(this.TSBblackWhite_Click);
       // 
@@ -271,14 +271,14 @@
       this.TSBnone.Image = ((System.Drawing.Image)(resources.GetObject("TSBnone.Image")));
       this.TSBnone.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.TSBnone.Name = "TSBnone";
-      this.TSBnone.Size = new System.Drawing.Size(46, 34);
+      this.TSBnone.Size = new System.Drawing.Size(46, 28);
       this.TSBnone.Text = "Remove All Stones";
       this.TSBnone.Click += new System.EventHandler(this.TSBnone_Click);
       // 
       // toolStripSeparator8
       // 
       this.toolStripSeparator8.Name = "toolStripSeparator8";
-      this.toolStripSeparator8.Size = new System.Drawing.Size(6, 40);
+      this.toolStripSeparator8.Size = new System.Drawing.Size(6, 23);
       // 
       // TSBsetupStart
       // 
@@ -286,7 +286,7 @@
       this.TSBsetupStart.Image = global::GoPlanner.Properties.Resources.settings;
       this.TSBsetupStart.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.TSBsetupStart.Name = "TSBsetupStart";
-      this.TSBsetupStart.Size = new System.Drawing.Size(46, 34);
+      this.TSBsetupStart.Size = new System.Drawing.Size(46, 28);
       this.TSBsetupStart.Text = "toolStripButton1";
       this.TSBsetupStart.ToolTipText = "Set up and Start game F8";
       this.TSBsetupStart.Click += new System.EventHandler(this.TSBsetupStart_Click);
@@ -297,7 +297,7 @@
       this.TSBpass.Image = global::GoPlanner.Properties.Resources.pass;
       this.TSBpass.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.TSBpass.Name = "TSBpass";
-      this.TSBpass.Size = new System.Drawing.Size(46, 34);
+      this.TSBpass.Size = new System.Drawing.Size(46, 28);
       this.TSBpass.Text = "toolStripButton1";
       this.TSBpass.ToolTipText = "Pass";
       this.TSBpass.Click += new System.EventHandler(this.TSBpass_Click);
@@ -308,7 +308,7 @@
       this.TSBresign.Image = global::GoPlanner.Properties.Resources.white_flag;
       this.TSBresign.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.TSBresign.Name = "TSBresign";
-      this.TSBresign.Size = new System.Drawing.Size(46, 34);
+      this.TSBresign.Size = new System.Drawing.Size(46, 28);
       this.TSBresign.Text = "Resign";
       this.TSBresign.Click += new System.EventHandler(this.TSBresign_Click);
       // 
@@ -318,7 +318,7 @@
       this.TSBscore.Image = global::GoPlanner.Properties.Resources.score;
       this.TSBscore.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.TSBscore.Name = "TSBscore";
-      this.TSBscore.Size = new System.Drawing.Size(46, 34);
+      this.TSBscore.Size = new System.Drawing.Size(46, 28);
       this.TSBscore.Text = "toolStripButton1";
       this.TSBscore.ToolTipText = "Score F7";
       this.TSBscore.Click += new System.EventHandler(this.TSBscore_Click);
@@ -328,7 +328,7 @@
       this.TSBremovals.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
       this.TSBremovals.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.TSBremovals.Name = "TSBremovals";
-      this.TSBremovals.Size = new System.Drawing.Size(46, 34);
+      this.TSBremovals.Size = new System.Drawing.Size(46, 4);
       this.TSBremovals.Text = "toolStripButton1";
       this.TSBremovals.ToolTipText = "Show Removals after scoring";
       this.TSBremovals.Click += new System.EventHandler(this.TSBremovals_Click);
@@ -338,7 +338,7 @@
       this.TSBterritories.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
       this.TSBterritories.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.TSBterritories.Name = "TSBterritories";
-      this.TSBterritories.Size = new System.Drawing.Size(46, 34);
+      this.TSBterritories.Size = new System.Drawing.Size(46, 4);
       this.TSBterritories.Text = "toolStripButton3";
       this.TSBterritories.ToolTipText = "Show Territories after scoring";
       this.TSBterritories.Click += new System.EventHandler(this.TSBterritories_Click);
@@ -348,7 +348,7 @@
       this.TSBconnections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
       this.TSBconnections.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.TSBconnections.Name = "TSBconnections";
-      this.TSBconnections.Size = new System.Drawing.Size(46, 34);
+      this.TSBconnections.Size = new System.Drawing.Size(46, 4);
       this.TSBconnections.Text = "toolStripButton2";
       this.TSBconnections.ToolTipText = "Show Connections after scoring";
       this.TSBconnections.Click += new System.EventHandler(this.TSBconnections_Click);
@@ -356,7 +356,7 @@
       // toolStripSeparator4
       // 
       this.toolStripSeparator4.Name = "toolStripSeparator4";
-      this.toolStripSeparator4.Size = new System.Drawing.Size(6, 40);
+      this.toolStripSeparator4.Size = new System.Drawing.Size(6, 23);
       // 
       // helpToolStripButton
       // 
@@ -364,7 +364,7 @@
       this.helpToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripButton.Image")));
       this.helpToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.helpToolStripButton.Name = "helpToolStripButton";
-      this.helpToolStripButton.Size = new System.Drawing.Size(46, 34);
+      this.helpToolStripButton.Size = new System.Drawing.Size(46, 28);
       this.helpToolStripButton.Text = "He&lp";
       this.helpToolStripButton.Click += new System.EventHandler(this.helpToolStripButton_Click);
       // 
@@ -375,7 +375,7 @@
       this.ToolSCapturedBlacks.ForeColor = System.Drawing.SystemColors.Window;
       this.ToolSCapturedBlacks.Name = "ToolSCapturedBlacks";
       this.ToolSCapturedBlacks.ReadOnly = true;
-      this.ToolSCapturedBlacks.Size = new System.Drawing.Size(42, 40);
+      this.ToolSCapturedBlacks.Size = new System.Drawing.Size(42, 39);
       this.ToolSCapturedBlacks.Text = "0";
       this.ToolSCapturedBlacks.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
       this.ToolSCapturedBlacks.ToolTipText = "Captured Blacks";
@@ -386,7 +386,7 @@
       this.ToolSCapturedWhites.Font = new System.Drawing.Font("Segoe UI", 9F);
       this.ToolSCapturedWhites.Name = "ToolSCapturedWhites";
       this.ToolSCapturedWhites.ReadOnly = true;
-      this.ToolSCapturedWhites.Size = new System.Drawing.Size(42, 40);
+      this.ToolSCapturedWhites.Size = new System.Drawing.Size(42, 32);
       this.ToolSCapturedWhites.Text = "0";
       this.ToolSCapturedWhites.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
       this.ToolSCapturedWhites.ToolTipText = "Captured Whites";
@@ -397,7 +397,7 @@
       this.Undo10StripButton.Image = ((System.Drawing.Image)(resources.GetObject("Undo10StripButton.Image")));
       this.Undo10StripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.Undo10StripButton.Name = "Undo10StripButton";
-      this.Undo10StripButton.Size = new System.Drawing.Size(46, 34);
+      this.Undo10StripButton.Size = new System.Drawing.Size(46, 28);
       this.Undo10StripButton.Text = "toolStripButton1";
       this.Undo10StripButton.ToolTipText = "Undo Multiple";
       this.Undo10StripButton.Click += new System.EventHandler(this.Undo10StripButton_Click);
@@ -408,7 +408,7 @@
       this.UndoStripButton.Image = ((System.Drawing.Image)(resources.GetObject("UndoStripButton.Image")));
       this.UndoStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.UndoStripButton.Name = "UndoStripButton";
-      this.UndoStripButton.Size = new System.Drawing.Size(46, 34);
+      this.UndoStripButton.Size = new System.Drawing.Size(46, 28);
       this.UndoStripButton.Text = "toolStripButton2";
       this.UndoStripButton.ToolTipText = "Undo, Ctrl+Z, ←";
       this.UndoStripButton.Click += new System.EventHandler(this.UndoStripButton_Click);
@@ -419,7 +419,7 @@
       this.RedoStripButton.Image = ((System.Drawing.Image)(resources.GetObject("RedoStripButton.Image")));
       this.RedoStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.RedoStripButton.Name = "RedoStripButton";
-      this.RedoStripButton.Size = new System.Drawing.Size(46, 34);
+      this.RedoStripButton.Size = new System.Drawing.Size(46, 28);
       this.RedoStripButton.Text = "toolStripButton1";
       this.RedoStripButton.ToolTipText = "Redo, Ctrl+Y, →";
       this.RedoStripButton.Click += new System.EventHandler(this.RedoStripButton_Click);
@@ -430,7 +430,7 @@
       this.Redo10StripButton.Image = ((System.Drawing.Image)(resources.GetObject("Redo10StripButton.Image")));
       this.Redo10StripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.Redo10StripButton.Name = "Redo10StripButton";
-      this.Redo10StripButton.Size = new System.Drawing.Size(46, 34);
+      this.Redo10StripButton.Size = new System.Drawing.Size(46, 28);
       this.Redo10StripButton.Text = "toolStripButton1";
       this.Redo10StripButton.ToolTipText = "Redo multiple";
       this.Redo10StripButton.Click += new System.EventHandler(this.Redo10StripButton_Click);
@@ -752,7 +752,7 @@
       // toolStrip2
       // 
       this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.toolStrip2.ImageScalingSize = new System.Drawing.Size(32, 32);
+      this.toolStrip2.ImageScalingSize = new System.Drawing.Size(24, 24);
       this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TSTextBox1,
             this.TSTextBox2,
