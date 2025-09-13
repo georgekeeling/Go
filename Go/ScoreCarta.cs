@@ -1165,6 +1165,7 @@ namespace GoPlanner
       BlackStones = bs;
 
       // compensation for handicap, if present (territory scoring)
+      if (japanese) hc = 0;   // added by GK. See go.docx
       BlackStones -= hc;
       BlackCaptured = blackmoves - BlackStones;
       WhiteCaptured = whitemoves - WhiteStones;

@@ -44,14 +44,18 @@
       this.textAuthor = new System.Windows.Forms.TextBox();
       this.label7 = new System.Windows.Forms.Label();
       this.ButtonCancel = new System.Windows.Forms.Button();
-      this.textKomi = new System.Windows.Forms.TextBox();
+      this.TextKomi = new System.Windows.Forms.TextBox();
       this.label8 = new System.Windows.Forms.Label();
-      this.textHandicap = new System.Windows.Forms.TextBox();
+      this.TextHandicap = new System.Windows.Forms.TextBox();
       this.label9 = new System.Windows.Forms.Label();
       this.textResult = new System.Windows.Forms.TextBox();
       this.label10 = new System.Windows.Forms.Label();
       this.textRules = new System.Windows.Forms.TextBox();
       this.label11 = new System.Windows.Forms.Label();
+      this.TextPlayerBlack = new System.Windows.Forms.TextBox();
+      this.label12 = new System.Windows.Forms.Label();
+      this.TextPlayerWhite = new System.Windows.Forms.TextBox();
+      this.label13 = new System.Windows.Forms.Label();
       this.SuspendLayout();
       // 
       // label1
@@ -76,7 +80,7 @@
       // label2
       // 
       this.label2.AutoSize = true;
-      this.label2.Location = new System.Drawing.Point(40, 436);
+      this.label2.Location = new System.Drawing.Point(40, 540);
       this.label2.Name = "label2";
       this.label2.Size = new System.Drawing.Size(182, 25);
       this.label2.TabIndex = 2;
@@ -94,18 +98,17 @@
       // ButtonOK
       // 
       this.ButtonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-      this.ButtonOK.Location = new System.Drawing.Point(434, 760);
+      this.ButtonOK.Location = new System.Drawing.Point(434, 864);
       this.ButtonOK.Name = "ButtonOK";
       this.ButtonOK.Size = new System.Drawing.Size(154, 55);
       this.ButtonOK.TabIndex = 4;
       this.ButtonOK.Text = "&OK";
       this.ButtonOK.UseVisualStyleBackColor = true;
-      this.ButtonOK.Click += new System.EventHandler(this.ButtonOK_Click);
       // 
       // label4
       // 
       this.label4.AutoSize = true;
-      this.label4.Location = new System.Drawing.Point(40, 527);
+      this.label4.Location = new System.Drawing.Point(40, 631);
       this.label4.Name = "label4";
       this.label4.Size = new System.Drawing.Size(152, 25);
       this.label4.TabIndex = 5;
@@ -142,7 +145,7 @@
       // textGameName
       // 
       this.textGameName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-      this.textGameName.Location = new System.Drawing.Point(243, 434);
+      this.textGameName.Location = new System.Drawing.Point(243, 538);
       this.textGameName.Name = "textGameName";
       this.textGameName.Size = new System.Drawing.Size(561, 31);
       this.textGameName.TabIndex = 1;
@@ -170,7 +173,7 @@
       // textWarnings
       // 
       this.textWarnings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-      this.textWarnings.Location = new System.Drawing.Point(243, 525);
+      this.textWarnings.Location = new System.Drawing.Point(243, 629);
       this.textWarnings.Name = "textWarnings";
       this.textWarnings.ReadOnly = true;
       this.textWarnings.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
@@ -181,7 +184,7 @@
       // textAuthor
       // 
       this.textAuthor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-      this.textAuthor.Location = new System.Drawing.Point(243, 477);
+      this.textAuthor.Location = new System.Drawing.Point(243, 581);
       this.textAuthor.Name = "textAuthor";
       this.textAuthor.Size = new System.Drawing.Size(561, 31);
       this.textAuthor.TabIndex = 2;
@@ -189,7 +192,7 @@
       // label7
       // 
       this.label7.AutoSize = true;
-      this.label7.Location = new System.Drawing.Point(40, 479);
+      this.label7.Location = new System.Drawing.Point(40, 583);
       this.label7.Name = "label7";
       this.label7.Size = new System.Drawing.Size(124, 25);
       this.label7.TabIndex = 14;
@@ -198,22 +201,22 @@
       // ButtonCancel
       // 
       this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.ButtonCancel.Location = new System.Drawing.Point(622, 760);
+      this.ButtonCancel.Location = new System.Drawing.Point(622, 864);
       this.ButtonCancel.Name = "ButtonCancel";
       this.ButtonCancel.Size = new System.Drawing.Size(154, 55);
       this.ButtonCancel.TabIndex = 5;
       this.ButtonCancel.Text = "&Cancel";
       this.ButtonCancel.UseVisualStyleBackColor = true;
       // 
-      // textKomi
+      // TextKomi
       // 
-      this.textKomi.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-      this.textKomi.Location = new System.Drawing.Point(243, 242);
-      this.textKomi.Name = "textKomi";
-      this.textKomi.ReadOnly = true;
-      this.textKomi.Size = new System.Drawing.Size(561, 31);
-      this.textKomi.TabIndex = 16;
-      this.textKomi.TabStop = false;
+      this.TextKomi.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+      this.TextKomi.Location = new System.Drawing.Point(243, 242);
+      this.TextKomi.Name = "TextKomi";
+      this.TextKomi.Size = new System.Drawing.Size(561, 31);
+      this.TextKomi.TabIndex = 16;
+      this.TextKomi.TabStop = false;
+      this.TextKomi.TextChanged += new System.EventHandler(this.TextKomi_TextChanged);
       // 
       // label8
       // 
@@ -224,31 +227,30 @@
       this.label8.TabIndex = 15;
       this.label8.Text = "Komi (KM)";
       // 
-      // textHandicap
+      // TextHandicap
       // 
-      this.textHandicap.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-      this.textHandicap.Location = new System.Drawing.Point(243, 291);
-      this.textHandicap.Name = "textHandicap";
-      this.textHandicap.ReadOnly = true;
-      this.textHandicap.Size = new System.Drawing.Size(561, 31);
-      this.textHandicap.TabIndex = 18;
-      this.textHandicap.TabStop = false;
+      this.TextHandicap.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+      this.TextHandicap.Location = new System.Drawing.Point(243, 291);
+      this.TextHandicap.Name = "TextHandicap";
+      this.TextHandicap.Size = new System.Drawing.Size(561, 31);
+      this.TextHandicap.TabIndex = 18;
+      this.TextHandicap.TabStop = false;
+      this.TextHandicap.TextChanged += new System.EventHandler(this.TextHandicap_TextChanged);
       // 
       // label9
       // 
       this.label9.AutoSize = true;
       this.label9.Location = new System.Drawing.Point(40, 291);
       this.label9.Name = "label9";
-      this.label9.Size = new System.Drawing.Size(103, 25);
+      this.label9.Size = new System.Drawing.Size(152, 25);
       this.label9.TabIndex = 17;
-      this.label9.Text = "Handicap";
+      this.label9.Text = "Handicap (HA)";
       // 
       // textResult
       // 
       this.textResult.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
       this.textResult.Location = new System.Drawing.Point(243, 337);
       this.textResult.Name = "textResult";
-      this.textResult.ReadOnly = true;
       this.textResult.Size = new System.Drawing.Size(561, 31);
       this.textResult.TabIndex = 20;
       this.textResult.TabStop = false;
@@ -267,7 +269,6 @@
       this.textRules.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
       this.textRules.Location = new System.Drawing.Point(243, 380);
       this.textRules.Name = "textRules";
-      this.textRules.ReadOnly = true;
       this.textRules.Size = new System.Drawing.Size(561, 31);
       this.textRules.TabIndex = 22;
       this.textRules.TabStop = false;
@@ -281,20 +282,60 @@
       this.label11.TabIndex = 21;
       this.label11.Text = "Rules (RU)";
       // 
+      // TextPlayerBlack
+      // 
+      this.TextPlayerBlack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+      this.TextPlayerBlack.Location = new System.Drawing.Point(243, 435);
+      this.TextPlayerBlack.Name = "TextPlayerBlack";
+      this.TextPlayerBlack.Size = new System.Drawing.Size(561, 31);
+      this.TextPlayerBlack.TabIndex = 24;
+      this.TextPlayerBlack.TabStop = false;
+      // 
+      // label12
+      // 
+      this.label12.AutoSize = true;
+      this.label12.Location = new System.Drawing.Point(40, 435);
+      this.label12.Name = "label12";
+      this.label12.Size = new System.Drawing.Size(113, 25);
+      this.label12.TabIndex = 23;
+      this.label12.Text = "Black (PB)";
+      // 
+      // TextPlayerWhite
+      // 
+      this.TextPlayerWhite.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+      this.TextPlayerWhite.Location = new System.Drawing.Point(243, 488);
+      this.TextPlayerWhite.Name = "TextPlayerWhite";
+      this.TextPlayerWhite.Size = new System.Drawing.Size(561, 31);
+      this.TextPlayerWhite.TabIndex = 26;
+      this.TextPlayerWhite.TabStop = false;
+      // 
+      // label13
+      // 
+      this.label13.AutoSize = true;
+      this.label13.Location = new System.Drawing.Point(40, 488);
+      this.label13.Name = "label13";
+      this.label13.Size = new System.Drawing.Size(121, 25);
+      this.label13.TabIndex = 25;
+      this.label13.Text = "White (PW)";
+      // 
       // FileProperties
       // 
       this.AcceptButton = this.ButtonOK;
       this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.CancelButton = this.ButtonCancel;
-      this.ClientSize = new System.Drawing.Size(862, 917);
+      this.ClientSize = new System.Drawing.Size(862, 945);
+      this.Controls.Add(this.TextPlayerWhite);
+      this.Controls.Add(this.label13);
+      this.Controls.Add(this.TextPlayerBlack);
+      this.Controls.Add(this.label12);
       this.Controls.Add(this.textRules);
       this.Controls.Add(this.label11);
       this.Controls.Add(this.textResult);
       this.Controls.Add(this.label10);
-      this.Controls.Add(this.textHandicap);
+      this.Controls.Add(this.TextHandicap);
       this.Controls.Add(this.label9);
-      this.Controls.Add(this.textKomi);
+      this.Controls.Add(this.TextKomi);
       this.Controls.Add(this.label8);
       this.Controls.Add(this.ButtonCancel);
       this.Controls.Add(this.textAuthor);
@@ -341,13 +382,17 @@
     private System.Windows.Forms.TextBox textAuthor;
     private System.Windows.Forms.Label label7;
     private System.Windows.Forms.Button ButtonCancel;
-    private System.Windows.Forms.TextBox textKomi;
+    private System.Windows.Forms.TextBox TextKomi;
     private System.Windows.Forms.Label label8;
-    private System.Windows.Forms.TextBox textHandicap;
+    private System.Windows.Forms.TextBox TextHandicap;
     private System.Windows.Forms.Label label9;
     private System.Windows.Forms.TextBox textResult;
     private System.Windows.Forms.Label label10;
     private System.Windows.Forms.TextBox textRules;
     private System.Windows.Forms.Label label11;
+    private System.Windows.Forms.TextBox TextPlayerBlack;
+    private System.Windows.Forms.Label label12;
+    private System.Windows.Forms.TextBox TextPlayerWhite;
+    private System.Windows.Forms.Label label13;
   }
 }

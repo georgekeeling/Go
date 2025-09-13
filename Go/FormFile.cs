@@ -19,6 +19,8 @@ namespace GoPlanner
     public int handicap = 0;
     public string gameResult = "";
     public string rules = "";
+    public string playerBlack = "";
+    public string playerWhite = "";
 
     private AStone[,] saveInitialStones;
     private string savepatternName = "";
@@ -118,9 +120,16 @@ namespace GoPlanner
       try
       {
         StreamWriter theFile = new StreamWriter(fullFileName);
+
         theFile.Write("(;FF[4]GM[1]SZ[19]AP[GAKgo]");   // Standard preamble
-        if (gameName != "") { theFile.Write("GN[" + gameName + "]"); }
-        if (author != "") { theFile.Write("US[" + author + "]"); }
+        WritePreambleField("KM", komi.ToString());
+        WritePreambleField("HA", handicap.ToString());
+        WritePreambleField("RE", gameResult);
+        WritePreambleField("RU", rules);
+        WritePreambleField("PB", playerBlack);
+        WritePreambleField("PW", playerWhite);
+        WritePreambleField("GN", gameName);
+        WritePreambleField("US", author);
 
         // Want to write stones in sequence they were put on board, including ones that were captured
         // and even possible large groups added or removed with Delete cut or paste
@@ -156,6 +165,16 @@ namespace GoPlanner
 
         theFile.WriteLine(")");
         theFile.Close();
+
+        void WritePreambleField(string field, string value)
+        {
+          if (value != "")
+          {
+            value = value.Replace("[", "{");
+            value = value.Replace("]", "}");
+            theFile.Write(field + "[" + value + "]");
+          }
+        }
       }
       catch (Exception ex) 
       {
@@ -238,6 +257,8 @@ namespace GoPlanner
       handicap = 0;
       gameResult = "";
       rules = "";
+      playerWhite = "";
+      playerBlack = "";
       Text = programTitle + ": " + titleEnd;
       selection.Off();
       panelMain.Invalidate();
@@ -423,6 +444,23 @@ namespace GoPlanner
             break;
           case "RU":
             rules = value;
+            break;
+          case "PB":
+            playerBlack = value;
+            break;
+          case "PW":
+            playerWhite = value;
+            break;
+          case "HA":
+            try
+            {
+              handicap = int.Parse(value);
+            }
+            catch (Exception ex)
+            {
+              FileWarning(ix, "Handicap value not an integer: " + ex.Message);
+              handicap = 0;
+            }
             break;
           case "W":
           case "B":
