@@ -76,6 +76,8 @@ namespace GoPlanner
         playerTimer.Enabled = true;
         TSBblack.Checked = true;    // set these so htat undo does not change cursor color
         TSBwhite.Checked = false;
+        playerBlack = playerName;
+        playerWhite = GetOpponentName();
       }
       else
       {
@@ -86,6 +88,8 @@ namespace GoPlanner
         playerTimer.Enabled = false;
         TSBblack.Checked = false;    // set these so htat undo does not change cursor color
         TSBwhite.Checked = true;
+        playerBlack = GetOpponentName();
+        playerWhite = playerName;
       }
       EnableDisableBoard();
       passCount = 0;
@@ -98,6 +102,8 @@ namespace GoPlanner
       connection.On("Pass", Pass);
       connection.On("OpponentResigned", OpponentResigned);
       connection.On("YouResigned", YouResigned);
+      connection.On("OpponentOutOfTime", OpponentOutOfTime);
+      connection.On("YouOutOfTime", YouOutOfTime);
       gameSetUp.Dispose();
     }
     private string GetOpponentName()
@@ -132,7 +138,6 @@ namespace GoPlanner
     private async void MouseUpInGame(int boardX, int boardY)
     {
       // similar to parts of PanelMain_MouseUp
-      SaveState("Mouse Up");
       if (!playersTurn)
       {
         statusM.Set("Not your turn");
@@ -143,8 +148,9 @@ namespace GoPlanner
         statusM.Set("Illegal move - point occupied");
         return;
       }
+      SaveState("Mouse Up");
       thePoints[boardX, boardY].color = playerColor;
-      if (!ProcessMove(boardX, boardY, playerColor)) return;
+      if (!ProcessMove(boardX, boardY, playerColor)) return;  // ProcessMove does UnSaveState if false
       EndMove(boardX, boardY, GetOpponentName() + " to move");
       SetPlayer(false);
       passCount = 0;
@@ -227,24 +233,33 @@ namespace GoPlanner
     }
     private async void ProcessTick(object sender, EventArgs e)
     {
+      // called by timer event every second
       if (playerTimeLeft > 0) playerTimeLeft--;
       YouMainTime.Text = TimeSpan.FromSeconds(playerTimeLeft).ToString(@"hh\:mm\:ss");
       await connection.InvokeAsync("TickTock", YouMainTime.Text);
       if (playerTimeLeft <= 0)    // <0 should be impossible
       {
-        EndGame(playerName + ", your time expired. " + GetOpponentName() + " wins!");
+        playerTimer.Stop();
+        await connection.InvokeAsync("OutOfTime");
       }
     }
-    private async void TickTock(string time)
+    private void TickTock(string time)
     {
       if (InvokeRequired) { Invoke((Action)(() => TickTock(time))); return; }
       OpponentMainTime.Text = time;
-      if (time == "00:00:00")
-      {
-        string msg = GetOpponentName() + "'s time expired. " + playerName + ", you win!";
-        await connection.InvokeAsync("EndGame", msg);
-        EndGame(msg);
-      }
+    }
+    private async void OpponentOutOfTime()
+    {
+      if (InvokeRequired) { Invoke((Action)(() => OpponentOutOfTime())); return; }
+      string result = GetOpponentName() + " out of time, " + playerName + " wins";
+      await connection.InvokeAsync("EndGameKillUsers", result);
+      EndGame(GetOpponentName() + " out of time. You win!", result);
+    }
+    private void YouOutOfTime()
+    {
+      if (InvokeRequired) { Invoke((Action)(() => YouOutOfTime())); return; }
+      string msg = "You are out of time. " + GetOpponentName() + " wins.";
+      EndGame(msg, playerName + " out of time, " + GetOpponentName() + " wins");
     }
     private void PassToolStripMenuItem_Click(object sender, EventArgs e)
     {
@@ -264,7 +279,7 @@ namespace GoPlanner
       {
         // passCount must be 2
         await connection.InvokeAsync("Pass");
-        EndGame(playerName + " and " + GetOpponentName() + " passed. Game over.");
+        EndGame(playerName + " and " + GetOpponentName() + " passed. Game over.", "Both players passed");
       }
     }
     private async void Pass()
@@ -280,26 +295,30 @@ namespace GoPlanner
       else
       {
         // passCount must be 2
-        string msg = playerName + " and " + GetOpponentName() + " passed. Game over.";
-        await connection.InvokeAsync("EndGameKillUsers", msg);
-        EndGame(msg);
+        string result = "Both players passed";
+        await connection.InvokeAsync("EndGameKillUsers", result);
+        EndGame(playerName + " and " + GetOpponentName() + " passed. Game over.", result);
       }
     }
-    private async void EndGame(string msg) 
+    private async void EndGame(string displayMessage, string result) 
     {       
       gameInProgress = false;
       playerTimer.Stop();
       playerTimer.Enabled = false;
-      statusM.Set(msg);
+      statusM.Set(displayMessage);
       EnableDisableBoard();
       connection.Closed -= closedHandler;
-      await connection.StopAsync();
-      new MyMessageBox(msg, "Game over", this);
+      await connection.StopAsync();     // this produces ton of exceptions in output debug window
+                                        // CoPilot says not to worry!
+      gameResult = result;
+      new MyMessageBox(displayMessage, "Game over", this);
     }
-    private void OpponentDepartedInGame()
+    private async void OpponentDepartedInGame()
     {
       if (InvokeRequired) { Invoke((Action)OpponentDepartedInGame); return; }
-      EndGame(GetOpponentName() + " has departed. You win.");
+      string result = GetOpponentName() + " departed, " + playerName + " wins";
+      await connection.InvokeAsync("EndGameKillUsers", result);
+      EndGame(GetOpponentName() + " has departed. You win.", result);
     }
     private void ResignToolStripMenuItem_Click(object sender, EventArgs e)
     {
@@ -313,15 +332,15 @@ namespace GoPlanner
     private async void OpponentResigned()
     {
       if (InvokeRequired) { Invoke((Action)(() => OpponentResigned())); return; }
-      string msg = GetOpponentName() + " resigned. You win!";
-      await connection.InvokeAsync("EndGameKillUsers", msg);
-      EndGame(msg);
+      string result = GetOpponentName() + " resigned, " + playerName + " wins";
+      await connection.InvokeAsync("EndGameKillUsers", result);
+      EndGame(GetOpponentName() + " resigned. You win!", result);
     }
     private void YouResigned()
     {
       if (InvokeRequired) { Invoke((Action)(() => YouResigned())); return; }
       string msg = "You resigned. " + GetOpponentName() + " wins.";
-      EndGame(msg);
+      EndGame(msg, playerName + " resigned, " + GetOpponentName() + " wins");
     }
   }
 }

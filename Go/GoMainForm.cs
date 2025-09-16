@@ -530,6 +530,13 @@ namespace GoPlanner
     private void UpdateTSTextBox1 (string text)
     {
       TSTextBox1Text = text;
+      if (InvokeRequired) { 
+        Invoke(new Action(() => { TSTextBox1.Text = TSTextBox1Text; }));
+        return; 
+      }
+      TSTextBox1.Text = TSTextBox1Text;
+      return;
+      // above works OK on my laptop. We will see if it works on David's machine ...
       try
       {
         TSTextBox1.Text = TSTextBox1Text;

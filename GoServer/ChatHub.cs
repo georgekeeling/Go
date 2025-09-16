@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.ConstrainedExecution;
 using System.Security.Cryptography;
 using System.Text;
@@ -183,7 +184,7 @@ namespace SignalRChat.Hubs
       User? testPlayer = Users.Find(x => (x.Name.ToLower() == lowerName2));
       if (testPlayer != null)
       {
-        Debug.WriteLine(">>> ChallengeDeclined: sent to " + testPlayer.Name);
+        Debug.WriteLine(">>> " + message + " sent to " + testPlayer.Name);
         await Clients.Client(testPlayer.ConnectionId).SendAsync(message);
       }
     }
@@ -279,14 +280,6 @@ namespace SignalRChat.Hubs
         await Clients.Client(OpponentID).SendAsync("UndoDenied");
       }
     }
-    public async Task TickTock(string timeString)
-    {
-      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
-      if (OpponentID != "")
-      {
-        await Clients.Client(OpponentID).SendAsync("TickTock", timeString);
-      }
-    }
     public async Task Pass()
     {
       string OpponentID = GetOtherConnectionID(Context.ConnectionId);
@@ -300,7 +293,6 @@ namespace SignalRChat.Hubs
       // now clean up both players. Should not get called twice in rapid succession
       // at end of game. 
       var Users = Gls.users;
-      string logMessage = "EndGameKillUsers: ";
       User? testPlayer = null; 
       User? testOpponent = null; 
       Debug.WriteLine(">>> EndGameKillUsers: " + result + " Users " + Users.Count);
@@ -310,7 +302,6 @@ namespace SignalRChat.Hubs
         testPlayer = Users.Find(x => x.ConnectionId == Context.ConnectionId);
         if (testPlayer != null)
         {
-          logMessage += "killed player " + testPlayer.Name + " ";
           Users.Remove(testPlayer);   // remove user from list
         }
         if (OpponentID != "")
@@ -318,17 +309,52 @@ namespace SignalRChat.Hubs
           testOpponent = Users.Find(x => x.ConnectionId == OpponentID);
           if (testOpponent != null)
           {
-            logMessage += "killed opponent " + testOpponent.Name + " ";
             Users.Remove(testOpponent);   // remove user from list
           }
         }
       }
       Debug.WriteLine(">>> EndGameKillUsers2: " + result + " Users " + Users.Count);
-      await LogSomething(logMessage);
+      string logMessage = "Game ended between ";
+      if (testPlayer != null)
+      {
+        logMessage += testPlayer.Name;
+      }
+      else
+      {
+        logMessage += "unknown";
+      }
+      logMessage += " and ";
+      if (testOpponent != null)
+      {
+        logMessage += testOpponent.Name;
+      }
+      else
+      {
+        logMessage += "unknown";
+      }
+      await LogSomething(logMessage + ". " + result);
+    }
+    public async Task TickTock(string timeString)
+    {
+      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+      if (OpponentID != "")
+      {
+        await Clients.Client(OpponentID).SendAsync("TickTock", timeString);
+      }
+    }
+    public async Task OutOfTime()
+    {
+      // send message to both players that game is over
+      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+      if (OpponentID != "")
+      {
+        await Clients.Client(OpponentID).SendAsync("OpponentOutOfTime");
+      }
+      await Clients.Caller.SendAsync("YouOutOfTime");
     }
     public async Task Resign()
     {
-      // send message to player2 that game is over
+      // send message to both players that game is over
       string OpponentID = GetOtherConnectionID(Context.ConnectionId);
       if (OpponentID != "")
       {
