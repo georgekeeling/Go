@@ -31,6 +31,7 @@ namespace GoPlanner
 
     public bool showSequence;
     public bool enableSave;
+    public bool enableBeep = true;
 
     public ToolsOptions(GoPlanner parent)
     {
@@ -45,14 +46,31 @@ namespace GoPlanner
       SetLabels(topLabels, topScript, topFromLeft);
       SetLabels(leftLabels, leftScript, leftFromTop);
     }
+    public void OptionalBeep()
+    {
+      if (enableBeep)
+      {
+        System.Media.SystemSounds.Beep.Play();
+        //return; Efforts to make more than one beep failed
+        //for (int i = 0; i < number; i++)
+        //{
+        //  System.Media.SystemSounds.Beep.Play();
+        //  System.Threading.Thread.Sleep(100);
+        //}
+      }
+    }
     public void ShowTools()
     {
+      // complete mystery why AllRefsCombo will not get focus when form opens
       StartPosition = FormStartPosition.CenterParent;
       SetCombos();
       EnableSave.Checked = enableSave;
+      AudibleReminders.Checked = enableBeep;
       ShowDialog();
+      enableBeep = AudibleReminders.Checked;
       SaveOptions();
     }
+
     private void SetCombos()
     {
       TopScriptCombo.SelectedIndex = topScript;
@@ -110,6 +128,7 @@ namespace GoPlanner
         gp.TSBblackWhite.Checked = true;
         gp.TSBblackWhite_Click(null, null);
       }
+      enableBeep = Properties.Settings.Default.enableBeep;
     }
     public void SaveOptions()
     {
@@ -124,6 +143,7 @@ namespace GoPlanner
 
       Properties.Settings.Default.startBlack = StartBlack.Checked;
       Properties.Settings.Default.startAlternating = StartAlternating.Checked;
+      Properties.Settings.Default.enableBeep = enableBeep;
     }
     private void SetLabels(string[] labels, int whichScript, bool direction)
     {

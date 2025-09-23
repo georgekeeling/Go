@@ -44,7 +44,7 @@ namespace GoPlanner
     private readonly Selection selection;
     public readonly StatusM statusM;
 
-    private ToolsOptions toolsOptions;
+    public ToolsOptions toolsOptions;
 
     public string programTitle;
     public string programVersion;

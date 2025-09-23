@@ -53,11 +53,13 @@
       this.PlayerStone = new System.Windows.Forms.Button();
       this.OpponentStone = new System.Windows.Forms.Button();
       this.TimeError = new System.Windows.Forms.Label();
+      this.AudibleReminders = new System.Windows.Forms.CheckBox();
+      this.label9 = new System.Windows.Forms.Label();
       this.SuspendLayout();
       // 
       // ServerStatus
       // 
-      this.ServerStatus.Location = new System.Drawing.Point(191, 25);
+      this.ServerStatus.Location = new System.Drawing.Point(235, 25);
       this.ServerStatus.Name = "ServerStatus";
       this.ServerStatus.ReadOnly = true;
       this.ServerStatus.Size = new System.Drawing.Size(591, 31);
@@ -83,7 +85,7 @@
       // 
       // PlayerName
       // 
-      this.PlayerName.Location = new System.Drawing.Point(191, 100);
+      this.PlayerName.Location = new System.Drawing.Point(235, 100);
       this.PlayerName.MaxLength = 10;
       this.PlayerName.Name = "PlayerName";
       this.PlayerName.Size = new System.Drawing.Size(192, 31);
@@ -91,7 +93,7 @@
       // 
       // ButtonTellServerName
       // 
-      this.ButtonTellServerName.Location = new System.Drawing.Point(626, 98);
+      this.ButtonTellServerName.Location = new System.Drawing.Point(670, 98);
       this.ButtonTellServerName.Name = "ButtonTellServerName";
       this.ButtonTellServerName.Size = new System.Drawing.Size(155, 32);
       this.ButtonTellServerName.TabIndex = 4;
@@ -101,7 +103,7 @@
       // 
       // ButtonTellServerOpponent
       // 
-      this.ButtonTellServerOpponent.Location = new System.Drawing.Point(627, 179);
+      this.ButtonTellServerOpponent.Location = new System.Drawing.Point(671, 179);
       this.ButtonTellServerOpponent.Name = "ButtonTellServerOpponent";
       this.ButtonTellServerOpponent.Size = new System.Drawing.Size(155, 32);
       this.ButtonTellServerOpponent.TabIndex = 7;
@@ -111,7 +113,7 @@
       // 
       // OpponentName
       // 
-      this.OpponentName.Location = new System.Drawing.Point(192, 181);
+      this.OpponentName.Location = new System.Drawing.Point(236, 181);
       this.OpponentName.MaxLength = 10;
       this.OpponentName.Name = "OpponentName";
       this.OpponentName.Size = new System.Drawing.Size(191, 31);
@@ -149,7 +151,7 @@
       // ServerError
       // 
       this.ServerError.AutoSize = true;
-      this.ServerError.Location = new System.Drawing.Point(186, 60);
+      this.ServerError.Location = new System.Drawing.Point(230, 60);
       this.ServerError.Name = "ServerError";
       this.ServerError.Size = new System.Drawing.Size(54, 25);
       this.ServerError.TabIndex = 10;
@@ -158,7 +160,7 @@
       // NameError
       // 
       this.NameError.AutoSize = true;
-      this.NameError.Location = new System.Drawing.Point(191, 136);
+      this.NameError.Location = new System.Drawing.Point(235, 136);
       this.NameError.Name = "NameError";
       this.NameError.Size = new System.Drawing.Size(70, 25);
       this.NameError.TabIndex = 11;
@@ -167,7 +169,7 @@
       // OpponentError
       // 
       this.OpponentError.AutoSize = true;
-      this.OpponentError.Location = new System.Drawing.Point(191, 215);
+      this.OpponentError.Location = new System.Drawing.Point(235, 215);
       this.OpponentError.Name = "OpponentError";
       this.OpponentError.Size = new System.Drawing.Size(70, 25);
       this.OpponentError.TabIndex = 12;
@@ -184,7 +186,7 @@
       // 
       // PlayHours
       // 
-      this.PlayHours.Location = new System.Drawing.Point(234, 278);
+      this.PlayHours.Location = new System.Drawing.Point(278, 278);
       this.PlayHours.MaxLength = 2;
       this.PlayHours.Name = "PlayHours";
       this.PlayHours.Size = new System.Drawing.Size(36, 31);
@@ -195,7 +197,7 @@
       // label5
       // 
       this.label5.AutoSize = true;
-      this.label5.Location = new System.Drawing.Point(186, 284);
+      this.label5.Location = new System.Drawing.Point(230, 284);
       this.label5.Name = "label5";
       this.label5.Size = new System.Drawing.Size(42, 25);
       this.label5.TabIndex = 15;
@@ -204,7 +206,7 @@
       // label6
       // 
       this.label6.AutoSize = true;
-      this.label6.Location = new System.Drawing.Point(296, 284);
+      this.label6.Location = new System.Drawing.Point(340, 284);
       this.label6.Name = "label6";
       this.label6.Size = new System.Drawing.Size(52, 25);
       this.label6.TabIndex = 17;
@@ -212,7 +214,7 @@
       // 
       // PlayMinutes
       // 
-      this.PlayMinutes.Location = new System.Drawing.Point(347, 278);
+      this.PlayMinutes.Location = new System.Drawing.Point(391, 278);
       this.PlayMinutes.MaxLength = 2;
       this.PlayMinutes.Name = "PlayMinutes";
       this.PlayMinutes.Size = new System.Drawing.Size(36, 31);
@@ -223,7 +225,7 @@
       // label7
       // 
       this.label7.AutoSize = true;
-      this.label7.Location = new System.Drawing.Point(429, 284);
+      this.label7.Location = new System.Drawing.Point(473, 284);
       this.label7.Name = "label7";
       this.label7.Size = new System.Drawing.Size(138, 25);
       this.label7.TabIndex = 18;
@@ -243,7 +245,7 @@
       this.AllowUndos.AutoSize = true;
       this.AllowUndos.Checked = true;
       this.AllowUndos.CheckState = System.Windows.Forms.CheckState.Checked;
-      this.AllowUndos.Location = new System.Drawing.Point(192, 359);
+      this.AllowUndos.Location = new System.Drawing.Point(236, 359);
       this.AllowUndos.Name = "AllowUndos";
       this.AllowUndos.Size = new System.Drawing.Size(28, 27);
       this.AllowUndos.TabIndex = 20;
@@ -254,7 +256,7 @@
       // 
       this.PlayerStone.BackColor = System.Drawing.Color.White;
       this.PlayerStone.Image = global::GoPlanner.Properties.Resources.StoneBlack;
-      this.PlayerStone.Location = new System.Drawing.Point(417, 93);
+      this.PlayerStone.Location = new System.Drawing.Point(461, 93);
       this.PlayerStone.Name = "PlayerStone";
       this.PlayerStone.Size = new System.Drawing.Size(40, 40);
       this.PlayerStone.TabIndex = 21;
@@ -265,7 +267,7 @@
       // 
       this.OpponentStone.BackColor = System.Drawing.Color.White;
       this.OpponentStone.Image = global::GoPlanner.Properties.Resources.StoneBlack;
-      this.OpponentStone.Location = new System.Drawing.Point(417, 175);
+      this.OpponentStone.Location = new System.Drawing.Point(461, 175);
       this.OpponentStone.Name = "OpponentStone";
       this.OpponentStone.Size = new System.Drawing.Size(40, 40);
       this.OpponentStone.TabIndex = 22;
@@ -275,11 +277,29 @@
       // TimeError
       // 
       this.TimeError.AutoSize = true;
-      this.TimeError.Location = new System.Drawing.Point(191, 324);
+      this.TimeError.Location = new System.Drawing.Point(235, 324);
       this.TimeError.Name = "TimeError";
       this.TimeError.Size = new System.Drawing.Size(70, 25);
       this.TimeError.TabIndex = 23;
       this.TimeError.Text = "label4";
+      // 
+      // AudibleReminders
+      // 
+      this.AudibleReminders.AutoSize = true;
+      this.AudibleReminders.Location = new System.Drawing.Point(235, 423);
+      this.AudibleReminders.Name = "AudibleReminders";
+      this.AudibleReminders.Size = new System.Drawing.Size(28, 27);
+      this.AudibleReminders.TabIndex = 24;
+      this.AudibleReminders.UseVisualStyleBackColor = true;
+      // 
+      // label9
+      // 
+      this.label9.AutoSize = true;
+      this.label9.Location = new System.Drawing.Point(32, 423);
+      this.label9.Name = "label9";
+      this.label9.Size = new System.Drawing.Size(185, 25);
+      this.label9.TabIndex = 25;
+      this.label9.Text = "Audible reminders";
       // 
       // GameSetUp
       // 
@@ -287,6 +307,8 @@
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.CancelButton = this.ButtonCancel;
       this.ClientSize = new System.Drawing.Size(872, 574);
+      this.Controls.Add(this.label9);
+      this.Controls.Add(this.AudibleReminders);
       this.Controls.Add(this.TimeError);
       this.Controls.Add(this.OpponentStone);
       this.Controls.Add(this.PlayerStone);
@@ -347,5 +369,7 @@
     public System.Windows.Forms.TextBox PlayHours;
     public System.Windows.Forms.TextBox PlayMinutes;
     public System.Windows.Forms.CheckBox AllowUndos;
+    private System.Windows.Forms.CheckBox AudibleReminders;
+    private System.Windows.Forms.Label label9;
   }
 }

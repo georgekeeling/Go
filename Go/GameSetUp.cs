@@ -36,6 +36,7 @@ namespace GoPlanner
       if (PlayMinutes.Text == "" && PlayHours.Text == "") { PlayMinutes.Text = "20"; }
       AllowUndos.Checked = Properties.Settings.Default.allowUndos;
       playerColor = Properties.Settings.Default.playerColor;
+      AudibleReminders.Checked = gp.toolsOptions.enableBeep;
       if (playerColor == "B") 
       { 
         // usually player should change colors every game (assuming they always same opponent)
@@ -307,6 +308,7 @@ namespace GoPlanner
       if (DialogResult == DialogResult.OK) 
       {
         // game start clicked
+        gp.toolsOptions.enableBeep = AudibleReminders.Checked;
         SaveSettings();
         await connection.InvokeAsync("GameStart", PlayerName.Text, OpponentName.Text);
         return; 
@@ -326,6 +328,7 @@ namespace GoPlanner
       Properties.Settings.Default.playMinutes = PlayMinutes.Text;
       Properties.Settings.Default.allowUndos = AllowUndos.Checked;
       Properties.Settings.Default.playerColor = playerColor;
+      Properties.Settings.Default.enableBeep = AudibleReminders.Checked;
       Properties.Settings.Default.Save();
     }
     private void GameStarted()

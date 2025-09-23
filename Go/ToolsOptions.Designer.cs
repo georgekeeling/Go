@@ -48,8 +48,9 @@
       this.ShowTerritory = new System.Windows.Forms.CheckBox();
       this.ShowConnections = new System.Windows.Forms.CheckBox();
       this.groupBox2 = new System.Windows.Forms.GroupBox();
-      this.ScoreResult = new System.Windows.Forms.TextBox();
+      this.ScoreResult = new System.Windows.Forms.Label();
       this.ShowNone = new System.Windows.Forms.CheckBox();
+      this.AudibleReminders = new System.Windows.Forms.CheckBox();
       this.groupBox1.SuspendLayout();
       this.groupBox2.SuspendLayout();
       this.SuspendLayout();
@@ -78,7 +79,7 @@
       this.TopScriptCombo.MaxDropDownItems = 4;
       this.TopScriptCombo.Name = "TopScriptCombo";
       this.TopScriptCombo.Size = new System.Drawing.Size(248, 33);
-      this.TopScriptCombo.TabIndex = 1;
+      this.TopScriptCombo.TabIndex = 2;
       this.TopScriptCombo.SelectedIndexChanged += new System.EventHandler(this.TopScriptCombo_SelectedIndexChanged);
       // 
       // TopDirectionCombo
@@ -91,7 +92,7 @@
       this.TopDirectionCombo.Location = new System.Drawing.Point(477, 76);
       this.TopDirectionCombo.Name = "TopDirectionCombo";
       this.TopDirectionCombo.Size = new System.Drawing.Size(181, 33);
-      this.TopDirectionCombo.TabIndex = 2;
+      this.TopDirectionCombo.TabIndex = 3;
       this.TopDirectionCombo.SelectedIndexChanged += new System.EventHandler(this.TopDirectionCombo_SelectedIndexChanged);
       // 
       // label2
@@ -109,16 +110,16 @@
       this.OmitLetters.MaxLength = 3;
       this.OmitLetters.Name = "OmitLetters";
       this.OmitLetters.Size = new System.Drawing.Size(79, 31);
-      this.OmitLetters.TabIndex = 4;
+      this.OmitLetters.TabIndex = 6;
       this.OmitLetters.TextChanged += new System.EventHandler(this.OmitLetters_TextChanged);
       // 
       // CloseButton
       // 
       this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.CloseButton.Location = new System.Drawing.Point(793, 577);
+      this.CloseButton.Location = new System.Drawing.Point(794, 644);
       this.CloseButton.Name = "CloseButton";
       this.CloseButton.Size = new System.Drawing.Size(154, 49);
-      this.CloseButton.TabIndex = 5;
+      this.CloseButton.TabIndex = 50;
       this.CloseButton.Text = "Close";
       this.CloseButton.UseVisualStyleBackColor = true;
       // 
@@ -132,7 +133,7 @@
       this.LeftDirectionCombo.Location = new System.Drawing.Point(477, 137);
       this.LeftDirectionCombo.Name = "LeftDirectionCombo";
       this.LeftDirectionCombo.Size = new System.Drawing.Size(181, 33);
-      this.LeftDirectionCombo.TabIndex = 8;
+      this.LeftDirectionCombo.TabIndex = 5;
       this.LeftDirectionCombo.SelectedIndexChanged += new System.EventHandler(this.LeftDirectionCombo_SelectedIndexChanged);
       // 
       // LeftScriptCombo
@@ -150,7 +151,7 @@
       this.LeftScriptCombo.MaxDropDownItems = 4;
       this.LeftScriptCombo.Name = "LeftScriptCombo";
       this.LeftScriptCombo.Size = new System.Drawing.Size(248, 33);
-      this.LeftScriptCombo.TabIndex = 7;
+      this.LeftScriptCombo.TabIndex = 4;
       this.LeftScriptCombo.SelectedIndexChanged += new System.EventHandler(this.LeftScriptCombo_SelectedIndexChanged);
       // 
       // label3
@@ -168,7 +169,7 @@
       this.groupBox1.Location = new System.Drawing.Point(41, 27);
       this.groupBox1.Name = "groupBox1";
       this.groupBox1.Size = new System.Drawing.Size(907, 178);
-      this.groupBox1.TabIndex = 9;
+      this.groupBox1.TabIndex = 0;
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Reference numbers";
       // 
@@ -190,7 +191,7 @@
       this.AllRefsCombo.MaxDropDownItems = 4;
       this.AllRefsCombo.Name = "AllRefsCombo";
       this.AllRefsCombo.Size = new System.Drawing.Size(329, 33);
-      this.AllRefsCombo.TabIndex = 10;
+      this.AllRefsCombo.TabIndex = 1;
       this.AllRefsCombo.SelectedIndexChanged += new System.EventHandler(this.AllRefsCombo_SelectedIndexChanged);
       // 
       // ShowSeqCheckBox
@@ -241,7 +242,7 @@
       this.ShowRemovals.Location = new System.Drawing.Point(27, 36);
       this.ShowRemovals.Name = "ShowRemovals";
       this.ShowRemovals.Size = new System.Drawing.Size(198, 29);
-      this.ShowRemovals.TabIndex = 14;
+      this.ShowRemovals.TabIndex = 20;
       this.ShowRemovals.Text = "Show Removals";
       this.ShowRemovals.UseVisualStyleBackColor = true;
       this.ShowRemovals.CheckedChanged += new System.EventHandler(this.ShowRemovals_CheckedChanged);
@@ -252,7 +253,7 @@
       this.ShowTerritory.Location = new System.Drawing.Point(27, 89);
       this.ShowTerritory.Name = "ShowTerritory";
       this.ShowTerritory.Size = new System.Drawing.Size(183, 29);
-      this.ShowTerritory.TabIndex = 15;
+      this.ShowTerritory.TabIndex = 21;
       this.ShowTerritory.Text = "Show Territory";
       this.ShowTerritory.UseVisualStyleBackColor = true;
       this.ShowTerritory.CheckedChanged += new System.EventHandler(this.ShowTerritory_CheckedChanged);
@@ -263,7 +264,7 @@
       this.ShowConnections.Location = new System.Drawing.Point(27, 139);
       this.ShowConnections.Name = "ShowConnections";
       this.ShowConnections.Size = new System.Drawing.Size(223, 29);
-      this.ShowConnections.TabIndex = 16;
+      this.ShowConnections.TabIndex = 22;
       this.ShowConnections.Text = "Show Connections";
       this.ShowConnections.UseVisualStyleBackColor = true;
       this.ShowConnections.CheckedChanged += new System.EventHandler(this.ShowConnections_CheckedChanged);
@@ -275,7 +276,7 @@
       this.groupBox2.Controls.Add(this.ShowConnections);
       this.groupBox2.Controls.Add(this.ShowTerritory);
       this.groupBox2.Controls.Add(this.ShowRemovals);
-      this.groupBox2.Location = new System.Drawing.Point(60, 449);
+      this.groupBox2.Location = new System.Drawing.Point(61, 516);
       this.groupBox2.Name = "groupBox2";
       this.groupBox2.Size = new System.Drawing.Size(652, 186);
       this.groupBox2.TabIndex = 17;
@@ -284,11 +285,11 @@
       // 
       // ScoreResult
       // 
-      this.ScoreResult.Location = new System.Drawing.Point(159, 0);
+      this.ScoreResult.AutoSize = true;
+      this.ScoreResult.Location = new System.Drawing.Point(173, 0);
       this.ScoreResult.Name = "ScoreResult";
-      this.ScoreResult.ReadOnly = true;
-      this.ScoreResult.Size = new System.Drawing.Size(325, 31);
-      this.ScoreResult.TabIndex = 18;
+      this.ScoreResult.Size = new System.Drawing.Size(0, 25);
+      this.ScoreResult.TabIndex = 24;
       // 
       // ShowNone
       // 
@@ -298,17 +299,28 @@
       this.ShowNone.Location = new System.Drawing.Point(356, 36);
       this.ShowNone.Name = "ShowNone";
       this.ShowNone.Size = new System.Drawing.Size(154, 29);
-      this.ShowNone.TabIndex = 17;
+      this.ShowNone.TabIndex = 23;
       this.ShowNone.Text = "Show None";
       this.ShowNone.UseVisualStyleBackColor = true;
       this.ShowNone.CheckedChanged += new System.EventHandler(this.ShowNone_CheckedChanged);
+      // 
+      // AudibleReminders
+      // 
+      this.AudibleReminders.AutoSize = true;
+      this.AudibleReminders.Location = new System.Drawing.Point(87, 449);
+      this.AudibleReminders.Name = "AudibleReminders";
+      this.AudibleReminders.Size = new System.Drawing.Size(217, 29);
+      this.AudibleReminders.TabIndex = 14;
+      this.AudibleReminders.Text = "Audible reminders";
+      this.AudibleReminders.UseVisualStyleBackColor = true;
       // 
       // ToolsOptions
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.CancelButton = this.CloseButton;
-      this.ClientSize = new System.Drawing.Size(959, 638);
+      this.ClientSize = new System.Drawing.Size(959, 719);
+      this.Controls.Add(this.AudibleReminders);
       this.Controls.Add(this.groupBox2);
       this.Controls.Add(this.StartAlternating);
       this.Controls.Add(this.StartBlack);
@@ -358,7 +370,8 @@
     public System.Windows.Forms.CheckBox ShowRemovals;
     public System.Windows.Forms.CheckBox ShowTerritory;
     public System.Windows.Forms.CheckBox ShowConnections;
-    public System.Windows.Forms.TextBox ScoreResult;
     public System.Windows.Forms.CheckBox ShowNone;
+    private System.Windows.Forms.CheckBox AudibleReminders;
+    public System.Windows.Forms.Label ScoreResult;
   }
 }

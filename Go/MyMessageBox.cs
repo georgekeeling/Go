@@ -17,7 +17,7 @@ namespace GoPlanner
       button2.Visible = false;
       buttonOK.Select();
       ShowDialog();
-    }
+      }
     public MyMessageBox(string message, Form parent)
     {
       InitializeComponent();

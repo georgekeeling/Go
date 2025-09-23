@@ -238,5 +238,17 @@ namespace GoPlanner.Properties {
                 this["playerColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool enableBeep {
+            get {
+                return ((bool)(this["enableBeep"]));
+            }
+            set {
+                this["enableBeep"] = value;
+            }
+        }
     }
 }

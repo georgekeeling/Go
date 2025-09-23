@@ -14,7 +14,8 @@ namespace GoPlanner
   {
     private void TestToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      openToolStripMenuItem_Click(sender, e);
+      toolsOptions.OptionalBeep();
+      statusM.Set("Testing beeps done");
     }
     private void TestBouzy()
     {
