@@ -250,5 +250,17 @@ namespace GoPlanner.Properties {
                 this["enableBeep"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public string pausesAllowed {
+            get {
+                return ((string)(this["pausesAllowed"]));
+            }
+            set {
+                this["pausesAllowed"] = value;
+            }
+        }
     }
 }

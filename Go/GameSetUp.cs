@@ -36,6 +36,7 @@ namespace GoPlanner
       if (PlayMinutes.Text == "" && PlayHours.Text == "") { PlayMinutes.Text = "20"; }
       AllowUndos.Checked = Properties.Settings.Default.allowUndos;
       playerColor = Properties.Settings.Default.playerColor;
+      PausesAllowed.Text = Properties.Settings.Default.pausesAllowed;
       AudibleReminders.Checked = gp.toolsOptions.enableBeep;
       if (playerColor == "B") 
       { 
@@ -92,7 +93,7 @@ namespace GoPlanner
         connection.On("NameHadError", NameHadError);
         connection.On("OpponentUnavailable", OpponentUnavailable);
         connection.On("OpponentThinking", OpponentThinking);
-        connection.On<string, string, string, bool, string>("ChallengeIn", ChallengeIn);
+        connection.On<string, string, string, bool, string, string>("ChallengeIn", ChallengeIn);
         connection.On("OpponentDeparted", OpponentDepartedInSetup);
         connection.On("ChallengeAccepted", ChallengeAccepted);
         connection.On("ChallengeDeclined", ChallengeDeclined);
@@ -101,6 +102,7 @@ namespace GoPlanner
         connection.On<string>("HoursChanged", HoursChanged);
         connection.On<string>("MinutesChanged", MinutesChanged);
         connection.On<bool>("UndoChanged", UndoChanged);
+        connection.On<string>("PausesChanged", PausesChanged);
       }
       catch (Exception ex)
       {
@@ -176,7 +178,7 @@ namespace GoPlanner
       try
       {
         await connection.InvokeAsync("Challenge", PlayerName.Text, OpponentName.Text,
-          PlayHours.Text, PlayMinutes.Text, AllowUndos.Checked, playerColor);
+          PlayHours.Text, PlayMinutes.Text, AllowUndos.Checked, playerColor, PausesAllowed.Text);
       }
       catch (Exception ex)
       {
@@ -198,11 +200,11 @@ namespace GoPlanner
       OpponentName.Enabled = false;
     }
     private async void ChallengeIn(string opponentName,
-      string hours, string minutes, bool undosAllowed, string opponentColor)
+      string hours, string minutes, bool undosAllowed, string opponentColor, string pauses)
     {
       if (InvokeRequired)
       {
-        Invoke((Action)(() => ChallengeIn(opponentName, hours, minutes, undosAllowed, opponentColor)));
+        Invoke((Action)(() => ChallengeIn(opponentName, hours, minutes, undosAllowed, opponentColor, pauses)));
         return;
       }
       int reply = 0;
@@ -217,7 +219,7 @@ namespace GoPlanner
         minutesString = minutes + "m";
       }
       new MyMessageBox(opponentName +" (" + opponentColor + ", " + hourString + minutesString + "," +
-        (undosAllowed ? " Undos allowed" : " No undos") + ")" + 
+        (undosAllowed ? " Undos allowed" : " No undos") + ", pauses " + pauses + ")" + 
         " challenges you to a game.", "Challenge", ref reply, 
         "Accept", "Decline", "", this);
       if (reply == 3)
@@ -231,6 +233,7 @@ namespace GoPlanner
         PlayHours.Text = hours;
         PlayMinutes.Text = minutes;
         AllowUndos.Checked = undosAllowed;
+        PausesAllowed.Text = pauses;
         ParamsEnable(false);
         ButtonStart.Enabled = false;
         ButtonCancel.Enabled = true;
@@ -253,6 +256,7 @@ namespace GoPlanner
       AllowUndos.Enabled = enable;
       PlayerStone.Enabled = enable;
       OpponentStone.Enabled = enable;
+      PausesAllowed.Enabled = enable;
     }
     private void ChallengeAccepted()
     {
@@ -288,10 +292,8 @@ namespace GoPlanner
       setupState = 0;
       ParamsEnable(true);
     }
-
-    private async void GameSetUp_FormClosing(object sender, FormClosingEventArgs e)
+private void RemoveHandlers()
     {
-      Console.WriteLine("GameSetUp_FormClosing " + DialogResult);
       connection.Remove("NameOK");
       connection.Remove("NameHadError");
       connection.Remove("OpponentUnavailable");
@@ -305,10 +307,15 @@ namespace GoPlanner
       connection.Remove("HoursChanged");
       connection.Remove("MinutesChanged");
       connection.Remove("UndoChanged");
+      connection.Remove("PausesChanged");
+    }
+    private async void GameSetUp_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      Console.WriteLine("GameSetUp_FormClosing " + DialogResult);
+      RemoveHandlers();
       if (DialogResult == DialogResult.OK) 
       {
         // game start clicked
-        gp.toolsOptions.enableBeep = AudibleReminders.Checked;
         SaveSettings();
         await connection.InvokeAsync("GameStart", PlayerName.Text, OpponentName.Text);
         return; 
@@ -322,6 +329,10 @@ namespace GoPlanner
     }
     private void SaveSettings()
     {
+      gp.toolsOptions.enableBeep = AudibleReminders.Checked;
+      gp.pauseCount = int.Parse(PausesAllowed.Text);
+      gp.oppPauseCount = gp.pauseCount;
+
       Properties.Settings.Default.playerName = PlayerName.Text;
       Properties.Settings.Default.opponentName = OpponentName.Text;
       Properties.Settings.Default.playHours = PlayHours.Text;
@@ -329,6 +340,7 @@ namespace GoPlanner
       Properties.Settings.Default.allowUndos = AllowUndos.Checked;
       Properties.Settings.Default.playerColor = playerColor;
       Properties.Settings.Default.enableBeep = AudibleReminders.Checked;
+      Properties.Settings.Default.pausesAllowed = PausesAllowed.Text;
       Properties.Settings.Default.Save();
     }
     private void GameStarted()
@@ -336,6 +348,7 @@ namespace GoPlanner
       // game started by other player
       if (InvokeRequired) { Invoke((Action)GameStarted); return; }
       FormClosing -= GameSetUp_FormClosing;
+      RemoveHandlers();
       SaveSettings();
       Close();
       DialogResult = DialogResult.OK;
@@ -446,6 +459,27 @@ namespace GoPlanner
       if (InvokeRequired) { Invoke((Action)(() => UndoChanged(newState))); return; }
       if (setupState != 2) { return; }
       AllowUndos.Checked = newState;
+    }
+
+    private async void PausesAllowed_TextChanged(object sender, EventArgs e)
+    {
+      if (!int.TryParse(PausesAllowed.Text, out int pauses) || pauses < 0 )
+      {
+        PausesAllowed.Text = "4";
+        return;
+      }
+      if (setupState == 1)
+      {
+        // change other player's pauses
+        await connection.InvokeAsync("PausesChanged", OpponentName.Text, PausesAllowed.Text);
+      }
+    }
+    private void PausesChanged(string newPauses)
+    {
+      // pauses changed by other player
+      if (InvokeRequired) { Invoke((Action)(() => PausesChanged(newPauses))); return; }
+      if (setupState != 2) { return; }
+      PausesAllowed.Text = newPauses;
     }
   }
 }

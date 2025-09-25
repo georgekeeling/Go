@@ -536,31 +536,32 @@ namespace GoPlanner
       }
       TSTextBox1.Text = TSTextBox1Text;
       return;
-      // above works OK on my laptop. We will see if it works on David's machine ...
-      try
-      {
-        TSTextBox1.Text = TSTextBox1Text;
-        // Console.WriteLine("Normal update " + TSTextBox1Text);
-      }
-      catch (InvalidOperationException)
-      {
-        // cross-thread exception, usually produces a warning in debug output
-        Invoke(new Action(() => { TSTextBox1.Text = TSTextBox1Text; }));
-        // Console.WriteLine("Abnormal update " + TSTextBox1Text);
-      }
-      // coplilot's suggestion to avoid cross-thread exception
-      // did not work on David' machine or my laptop
-      // it would need to process TSTextBox1_Paint
-      //if (InvokeRequired)
+      // above works OK on my laptop. We will see if it works on David's machine 
+      // it did, so and here is the old code
+      //try
       //{
-      //  Console.WriteLine("InvokeRequired " + text);
-      //  Invoke(new Action(() => TSTextBox1.Invalidate()));
+      //  TSTextBox1.Text = TSTextBox1Text;
+      //  // Console.WriteLine("Normal update " + TSTextBox1Text);
       //}
-      //else
+      //catch (InvalidOperationException)
       //{
-      //  Console.WriteLine("No InvokeRequired " + text);
-      //  TSTextBox1.Invalidate();
+      //  // cross-thread exception, usually produces a warning in debug output
+      //  Invoke(new Action(() => { TSTextBox1.Text = TSTextBox1Text; }));
+      //  // Console.WriteLine("Abnormal update " + TSTextBox1Text);
       //}
+      //// coplilot's suggestion to avoid cross-thread exception
+      //// did not work on David' machine or my laptop
+      //// it would need to process TSTextBox1_Paint
+      ////if (InvokeRequired)
+      ////{
+      ////  Console.WriteLine("InvokeRequired " + text);
+      ////  Invoke(new Action(() => TSTextBox1.Invalidate()));
+      ////}
+      ////else
+      ////{
+      ////  Console.WriteLine("No InvokeRequired " + text);
+      ////  TSTextBox1.Invalidate();
+      ////}
     }
     private void PanelMain_MouseMove(object sender, MouseEventArgs e)
     {

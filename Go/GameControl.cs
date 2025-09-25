@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,12 @@ namespace GoPlanner
     private Timer playerTimer;
     private bool allowUndos = true;
     private int passCount = 0;
+
+    public int pauseCount = 4;
+    public int oppPauseCount = 4;
+    private bool requestedPause = false;  // true if requsting pause or request accepted
+    private bool gamePaused = false; // true if game paused
+
     HubConnection connection;
     public Func<Exception, Task> closedHandler;
 
@@ -34,9 +41,10 @@ namespace GoPlanner
     {
       if (!CheckSafety("Game / Start")) { return; }
       GameSetUp gameSetUp = new GameSetUp(this);
-      if (gameSetUp.ShowDialog() == DialogResult.Cancel) { 
+      if (gameSetUp.ShowDialog() == DialogResult.Cancel) 
+      { 
         gameSetUp.Dispose();
-        return; 
+        return;
       }
       // game has started, black is playing
       ClearBoard(gameSetUp.PlayerName.Text + " plays " + gameSetUp.OpponentName.Text);
@@ -95,6 +103,7 @@ namespace GoPlanner
         playerBlack = GetOpponentName();
         playerWhite = playerName;
       }
+      DoPauseMenus();
       EnableDisableBoard();
       passCount = 0;
       // every handler added is removed in EndGame 
@@ -109,6 +118,10 @@ namespace GoPlanner
       connection.On("YouResigned", YouResigned);
       connection.On("OpponentOutOfTime", OpponentOutOfTime);
       connection.On("YouOutOfTime", YouOutOfTime);
+      connection.On("RequestPause", RequestPause);
+      connection.On("PauseGranted", PauseGranted);
+      connection.On("PauseDenied", PauseDenied);
+      connection.On("Resume", Resume);
       gameSetUp.Dispose();
     }
     private string GetOpponentName()
@@ -139,10 +152,26 @@ namespace GoPlanner
       PassToolStripMenuItem.Enabled = TSBpass.Enabled;
       ResignToolStripMenuItem.Enabled = TSBpass.Enabled;
       TSBresign.Enabled = TSBpass.Enabled;
+
+      if (gameInProgress)
+      {
+        TSBpause.Enabled = pauseCount > 0;
+        PauseToolStripMenuItem.Enabled = pauseCount > 0;
+      }
+      else
+      {
+        TSBpause.Enabled = false;
+        PauseToolStripMenuItem.Enabled = false;
+      }
     }
     private async void MouseUpInGame(int boardX, int boardY)
     {
       // similar to parts of PanelMain_MouseUp
+      if (gamePaused)
+      {
+        statusM.Set("Game is paused");
+        return;
+      }
       if (!playersTurn)
       {
         statusM.Set("Not your turn");
@@ -200,7 +229,7 @@ namespace GoPlanner
         return;
       }
     }
-    private void SetPlayer (bool playing)
+    private void SetPlayer(bool playing)
     {
       if (playersTurn == false && playing == true)
       {
@@ -369,8 +398,8 @@ namespace GoPlanner
         EndGame(playerName + " and " + GetOpponentName() + " passed. Game over.", result);
       }
     }
-    private async void EndGame(string displayMessage, string result) 
-    {       
+    private async void EndGame(string displayMessage, string result)
+    {
       gameInProgress = false;
       playerTimer.Stop();
       playerTimer.Enabled = false;
@@ -392,6 +421,10 @@ namespace GoPlanner
         connection.Remove("YouResigned");
         connection.Remove("OpponentOutOfTime");
         connection.Remove("YouOutOfTime");
+        connection.Remove("RequestPause");
+        connection.Remove("PauseGranted");
+        connection.Remove("PauseDenied");
+        connection.Remove("Resume");
 
         connection.Closed -= closedHandler;
         await connection.StopAsync();     // this produces ton of exceptions in output debug window
@@ -405,7 +438,7 @@ namespace GoPlanner
     }
     private async void OpponentDepartedInGame()
     {
-      if (!gameInProgress) 
+      if (!gameInProgress)
         return;      // happens after game ended normally. So nothing to do
       if (InvokeRequired) { Invoke((Action)OpponentDepartedInGame); return; }
       string result = GetOpponentName() + " departed, " + playerName + " wins";
@@ -433,6 +466,113 @@ namespace GoPlanner
       if (InvokeRequired) { Invoke((Action)(() => YouResigned())); return; }
       string msg = "You resigned. " + GetOpponentName() + " wins.";
       EndGame(msg, playerName + " resigned, " + GetOpponentName() + " wins");
+    }
+    private void PauseToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      TSBpause_Click(sender, e);
+    }
+    private async void TSBpause_Click(object sender, EventArgs e)
+    {
+      if (gamePaused)
+      {
+        // time to resume
+        await SafeInvokeAsync("Resume");
+        ResumeGame(true);
+      }
+      else
+      {
+        requestedPause = true;
+        await SafeInvokeAsync("RequestPause");
+      }
+    }
+    private async void RequestPause()
+    {
+      if (InvokeRequired) { Invoke((Action)(() => RequestPause())); return; }
+      if (requestedPause)
+      {
+        // I requested pause simultaneously
+        // I should get PauseDenied too, so nothing happens
+        await SafeInvokeAsync("PauseDenied");
+        return;
+      }
+      await SafeInvokeAsync("PauseGranted");
+      PauseGame(false);
+    }
+    private void PauseDenied()
+    {
+      if (InvokeRequired) { Invoke((Action)(() => PauseDenied())); return; }
+      statusM.Set("Pause denied.");
+      requestedPause = false;
+    }
+    private void PauseGranted()
+    {
+      if (InvokeRequired) { Invoke((Action)(() => PauseGranted())); return; }
+      PauseGame(true);
+      // panelMain.Cursor = Cursors.No;
+    }
+    private void PauseGame(bool playerRequested)
+    {
+      gamePaused = true;
+      if (playerRequested)
+      {
+        TSBpause.Image = Properties.Resources.play;
+        PauseToolStripMenuItem.Image = Properties.Resources.play;
+        PauseToolStripMenuItem.Text = "Resume";
+        pauseCount--;
+        string pausesLeft = pauseCount == 1 ? " pause left." : " pauses left.";
+        statusM.Set("Game paused by you. " + pauseCount + pausesLeft);
+      }
+      else
+      {
+        requestedPause = false;
+        TSBpause.Enabled = false;
+        PauseToolStripMenuItem.Enabled = false;
+        oppPauseCount--;
+        string pausesLeft = oppPauseCount == 1 ? " pause left." : " pauses left.";
+        statusM.Set("Game paused by opponent. They have " + oppPauseCount + pausesLeft);
+      }
+      PauseToolStripMenuItem.ToolTipText = "Pauses " + pauseCount + "/" + oppPauseCount;
+      TSBpause.ToolTipText = "Pauses " + pauseCount + "/" + oppPauseCount;
+      playerTimer.Enabled = false;
+      PassToolStripMenuItem.Enabled = false;
+      ResignToolStripMenuItem.Enabled = false;
+      TSBpass.Enabled = false;
+      TSBresign.Enabled = false;
+      UndoToolStripMenuItem.Enabled = false;
+      UndoStripButton.Enabled = false;
+    }
+    private void Resume()
+    {
+      if (InvokeRequired) { Invoke((Action)(() => Resume())); return; }
+      ResumeGame(false);
+    }
+    private void ResumeGame(bool playerRequested)
+    {
+      gamePaused = false;
+      requestedPause = false;
+      if (playerRequested)
+      {
+        TSBpause.Image = Properties.Resources.pause;
+        PauseToolStripMenuItem.Image = Properties.Resources.pause;
+        PauseToolStripMenuItem.Text = "Pause";
+      }
+      if (playersTurn)
+      {
+        statusM.Set("Game resumed. Your turn.");
+      }
+      else
+      {
+        statusM.Set("Game resumed. Opponent's turn.");
+      }
+      DoPauseMenus();
+      toolsOptions.OptionalBeep();
+      SetPlayer(playersTurn);   // restarts timer if my turn
+      EnableDisableBoard();
+    }
+    private void DoPauseMenus()
+    {
+      PauseToolStripMenuItem.ToolTipText = "Pauses " + pauseCount + "/" + oppPauseCount;
+      TSBpause.ToolTipText = "F8 Pauses " + pauseCount + "/" + oppPauseCount;
     }
   }
 }

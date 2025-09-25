@@ -93,7 +93,7 @@ namespace SignalRChat.Hubs
       }
     }
     public async Task Challenge(string playerName, string opponentName, 
-      string hours, string minutes, bool undosAllowed, string playerColour)
+      string hours, string minutes, bool undosAllowed, string playerColour, string pauses)
     {
       // player is issuing challenge to opponent
       // 1. check opponent exists and is not already playing
@@ -119,7 +119,7 @@ namespace SignalRChat.Hubs
       {
         await Clients.Caller.SendAsync("OpponentThinking");
         await Clients.Client(testOpponent.ConnectionId).SendAsync("ChallengeIn", 
-          playerName, hours, minutes, undosAllowed, playerColour);
+          playerName, hours, minutes, undosAllowed, playerColour, pauses);
       }
     }
     public async Task AcceptChallenge(string opponentName, string playerName)
@@ -247,6 +247,17 @@ namespace SignalRChat.Hubs
         await Clients.Client(testPlayer2.ConnectionId).SendAsync("UndoChanged", undosAllowed);
       }
     }
+    public async Task PausesChanged(string player2, string newPauses)
+    {
+      // send message to player2 that opponent has changed minutes
+      var Users = Gls.users;
+      string lowerName2 = player2.ToLower();
+      User? testPlayer2 = Users.Find(x => (x.Name.ToLower() == lowerName2));
+      if (testPlayer2 != null)
+      {
+        await Clients.Client(testPlayer2.ConnectionId).SendAsync("PausesChanged", newPauses);
+      }
+    }
     public async Task MakeMove(int boardX, int boardY)
     {
       // send message to player2 that game is over
@@ -362,6 +373,43 @@ namespace SignalRChat.Hubs
       }
       await Clients.Caller.SendAsync("YouResigned");
     }
+    public async Task Resume()
+    {
+      // send message to other players that game resumed
+      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+      if (OpponentID != "")
+      {
+        await Clients.Client(OpponentID).SendAsync("Resume");
+      }
+    }
+    public async Task RequestPause()
+    {
+      // send message to other players that game resumed
+      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+      if (OpponentID != "")
+      {
+        await Clients.Client(OpponentID).SendAsync("RequestPause");
+      }
+    }
+    public async Task PauseDenied()
+    {
+      // send message to other players that game resumed
+      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+      if (OpponentID != "")
+      {
+        await Clients.Client(OpponentID).SendAsync("PauseDenied");
+      }
+    }
+    public async Task PauseGranted()
+    {
+      // send message to other players that game resumed
+      string OpponentID = GetOtherConnectionID(Context.ConnectionId);
+      if (OpponentID != "")
+      {
+        await Clients.Client(OpponentID).SendAsync("PauseGranted");
+      }
+    }
+
     /////////////////////////////////////////////////////////////////////
     // Utility and test functions
     /////////////////////////////////////////////////////////////////////

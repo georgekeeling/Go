@@ -55,6 +55,8 @@
       this.TimeError = new System.Windows.Forms.Label();
       this.AudibleReminders = new System.Windows.Forms.CheckBox();
       this.label9 = new System.Windows.Forms.Label();
+      this.label10 = new System.Windows.Forms.Label();
+      this.PausesAllowed = new System.Windows.Forms.TextBox();
       this.SuspendLayout();
       // 
       // ServerStatus
@@ -225,7 +227,7 @@
       // label7
       // 
       this.label7.AutoSize = true;
-      this.label7.Location = new System.Drawing.Point(473, 284);
+      this.label7.Location = new System.Drawing.Point(456, 284);
       this.label7.Name = "label7";
       this.label7.Size = new System.Drawing.Size(138, 25);
       this.label7.TabIndex = 18;
@@ -286,7 +288,7 @@
       // AudibleReminders
       // 
       this.AudibleReminders.AutoSize = true;
-      this.AudibleReminders.Location = new System.Drawing.Point(235, 423);
+      this.AudibleReminders.Location = new System.Drawing.Point(235, 459);
       this.AudibleReminders.Name = "AudibleReminders";
       this.AudibleReminders.Size = new System.Drawing.Size(28, 27);
       this.AudibleReminders.TabIndex = 24;
@@ -295,11 +297,30 @@
       // label9
       // 
       this.label9.AutoSize = true;
-      this.label9.Location = new System.Drawing.Point(32, 423);
+      this.label9.Location = new System.Drawing.Point(32, 459);
       this.label9.Name = "label9";
       this.label9.Size = new System.Drawing.Size(185, 25);
       this.label9.TabIndex = 25;
       this.label9.Text = "Audible reminders";
+      // 
+      // label10
+      // 
+      this.label10.AutoSize = true;
+      this.label10.Location = new System.Drawing.Point(31, 409);
+      this.label10.Name = "label10";
+      this.label10.Size = new System.Drawing.Size(165, 25);
+      this.label10.TabIndex = 26;
+      this.label10.Text = "Pauses Allowed";
+      // 
+      // PausesAllowed
+      // 
+      this.PausesAllowed.Location = new System.Drawing.Point(235, 406);
+      this.PausesAllowed.MaxLength = 2;
+      this.PausesAllowed.Name = "PausesAllowed";
+      this.PausesAllowed.Size = new System.Drawing.Size(36, 31);
+      this.PausesAllowed.TabIndex = 22;
+      this.PausesAllowed.Text = "22";
+      this.PausesAllowed.TextChanged += new System.EventHandler(this.PausesAllowed_TextChanged);
       // 
       // GameSetUp
       // 
@@ -307,6 +328,8 @@
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.CancelButton = this.ButtonCancel;
       this.ClientSize = new System.Drawing.Size(872, 574);
+      this.Controls.Add(this.PausesAllowed);
+      this.Controls.Add(this.label10);
       this.Controls.Add(this.label9);
       this.Controls.Add(this.AudibleReminders);
       this.Controls.Add(this.TimeError);
@@ -371,5 +394,7 @@
     public System.Windows.Forms.CheckBox AllowUndos;
     private System.Windows.Forms.CheckBox AudibleReminders;
     private System.Windows.Forms.Label label9;
+    private System.Windows.Forms.Label label10;
+    public System.Windows.Forms.TextBox PausesAllowed;
   }
 }

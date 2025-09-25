@@ -241,6 +241,10 @@
     <None Include="img\settings.png" />
     <None Include="img\score.png" />
     <None Include="img\AllWhite.png" />
+    <None Include="img\squareBlack.png" />
+    <None Include="img\squareWhite.png" />
+    <None Include="img\pause.png" />
+    <None Include="img\play.png" />
     <Content Include="img\think_idea_work_mind_thinking_icon_192534.ico" />
   </ItemGroup>
   <ItemGroup>

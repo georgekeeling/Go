@@ -46,6 +46,7 @@
       this.TSBnone = new System.Windows.Forms.ToolStripButton();
       this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
       this.TSBsetupStart = new System.Windows.Forms.ToolStripButton();
+      this.TSBpause = new System.Windows.Forms.ToolStripButton();
       this.TSBpass = new System.Windows.Forms.ToolStripButton();
       this.TSBresign = new System.Windows.Forms.ToolStripButton();
       this.TSBscore = new System.Windows.Forms.ToolStripButton();
@@ -83,9 +84,10 @@
       this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.StartGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.PauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.PassToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.ScoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.ResignToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.ScoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
@@ -117,15 +119,14 @@
       // 
       this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
       this.panelMain.Font = new System.Drawing.Font("Arial Narrow", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.panelMain.Location = new System.Drawing.Point(3, 123);
+      this.panelMain.Location = new System.Drawing.Point(3, 170);
       this.panelMain.Name = "panelMain";
-      this.panelMain.Size = new System.Drawing.Size(1189, 820);
+      this.panelMain.Size = new System.Drawing.Size(1189, 773);
       this.panelMain.TabIndex = 2;
       this.panelMain.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelMain_Paint);
       // 
       // toolStrip1
       // 
-      this.toolStrip1.AutoSize = false;
       this.toolStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
       this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripButton,
@@ -142,6 +143,7 @@
             this.TSBnone,
             this.toolStripSeparator8,
             this.TSBsetupStart,
+            this.TSBpause,
             this.TSBpass,
             this.TSBresign,
             this.TSBscore,
@@ -159,7 +161,7 @@
       this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
       this.toolStrip1.Location = new System.Drawing.Point(0, 40);
       this.toolStrip1.Name = "toolStrip1";
-      this.toolStrip1.Size = new System.Drawing.Size(1195, 40);
+      this.toolStrip1.Size = new System.Drawing.Size(1195, 77);
       this.toolStrip1.TabIndex = 1;
       this.toolStrip1.Text = "toolStrip1";
       // 
@@ -289,8 +291,19 @@
       this.TSBsetupStart.Name = "TSBsetupStart";
       this.TSBsetupStart.Size = new System.Drawing.Size(46, 28);
       this.TSBsetupStart.Text = "toolStripButton1";
-      this.TSBsetupStart.ToolTipText = "Set up and Start game F8";
+      this.TSBsetupStart.ToolTipText = "Set up and Start game F7";
       this.TSBsetupStart.Click += new System.EventHandler(this.TSBsetupStart_Click);
+      // 
+      // TSBpause
+      // 
+      this.TSBpause.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.TSBpause.Image = global::GoPlanner.Properties.Resources.pause;
+      this.TSBpause.ImageTransparentColor = System.Drawing.Color.Magenta;
+      this.TSBpause.Name = "TSBpause";
+      this.TSBpause.Size = new System.Drawing.Size(46, 28);
+      this.TSBpause.Text = "toolStripButton1";
+      this.TSBpause.ToolTipText = "Pause / Resume";
+      this.TSBpause.Click += new System.EventHandler(this.TSBpause_Click);
       // 
       // TSBpass
       // 
@@ -300,7 +313,7 @@
       this.TSBpass.Name = "TSBpass";
       this.TSBpass.Size = new System.Drawing.Size(46, 28);
       this.TSBpass.Text = "toolStripButton1";
-      this.TSBpass.ToolTipText = "Pass";
+      this.TSBpass.ToolTipText = "Pass F9";
       this.TSBpass.Click += new System.EventHandler(this.TSBpass_Click);
       // 
       // TSBresign
@@ -321,7 +334,7 @@
       this.TSBscore.Name = "TSBscore";
       this.TSBscore.Size = new System.Drawing.Size(46, 28);
       this.TSBscore.Text = "toolStripButton1";
-      this.TSBscore.ToolTipText = "Score F7";
+      this.TSBscore.ToolTipText = "Score F10";
       this.TSBscore.Click += new System.EventHandler(this.TSBscore_Click);
       // 
       // TSBremovals
@@ -374,23 +387,23 @@
       // 
       // ToolSCapturedBlacks
       // 
-      this.ToolSCapturedBlacks.BackColor = System.Drawing.SystemColors.InfoText;
+      this.ToolSCapturedBlacks.BackColor = System.Drawing.Color.Black;
       this.ToolSCapturedBlacks.Font = new System.Drawing.Font("Segoe UI", 9F);
-      this.ToolSCapturedBlacks.ForeColor = System.Drawing.SystemColors.Window;
+      this.ToolSCapturedBlacks.ForeColor = System.Drawing.Color.White;
       this.ToolSCapturedBlacks.Name = "ToolSCapturedBlacks";
-      this.ToolSCapturedBlacks.ReadOnly = true;
       this.ToolSCapturedBlacks.Size = new System.Drawing.Size(42, 39);
       this.ToolSCapturedBlacks.Text = "0";
       this.ToolSCapturedBlacks.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-      this.ToolSCapturedBlacks.ToolTipText = "Captured Blacks";
+      this.ToolSCapturedBlacks.ToolTipText = "Captured blacks";
       // 
       // ToolSCapturedWhites
       // 
-      this.ToolSCapturedWhites.BorderStyle = System.Windows.Forms.BorderStyle.None;
+      this.ToolSCapturedWhites.BackColor = System.Drawing.Color.White;
       this.ToolSCapturedWhites.Font = new System.Drawing.Font("Segoe UI", 9F);
+      this.ToolSCapturedWhites.ForeColor = System.Drawing.Color.Black;
       this.ToolSCapturedWhites.Name = "ToolSCapturedWhites";
       this.ToolSCapturedWhites.ReadOnly = true;
-      this.ToolSCapturedWhites.Size = new System.Drawing.Size(42, 32);
+      this.ToolSCapturedWhites.Size = new System.Drawing.Size(42, 39);
       this.ToolSCapturedWhites.Text = "0";
       this.ToolSCapturedWhites.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
       this.ToolSCapturedWhites.ToolTipText = "Captured Whites";
@@ -638,9 +651,10 @@
       // 
       this.gameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StartGameToolStripMenuItem,
+            this.PauseToolStripMenuItem,
             this.PassToolStripMenuItem,
-            this.ScoreToolStripMenuItem,
-            this.ResignToolStripMenuItem});
+            this.ResignToolStripMenuItem,
+            this.ScoreToolStripMenuItem});
       this.gameToolStripMenuItem.Name = "gameToolStripMenuItem";
       this.gameToolStripMenuItem.Size = new System.Drawing.Size(96, 36);
       this.gameToolStripMenuItem.Text = "&Game";
@@ -649,36 +663,46 @@
       // 
       this.StartGameToolStripMenuItem.Image = global::GoPlanner.Properties.Resources.settings;
       this.StartGameToolStripMenuItem.Name = "StartGameToolStripMenuItem";
-      this.StartGameToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
-      this.StartGameToolStripMenuItem.Size = new System.Drawing.Size(336, 44);
+      this.StartGameToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
+      this.StartGameToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
       this.StartGameToolStripMenuItem.Text = "Set up && Start";
       this.StartGameToolStripMenuItem.ToolTipText = "Set up and Start game";
       this.StartGameToolStripMenuItem.Click += new System.EventHandler(this.StartGameToolStripMenuItem_Click);
+      // 
+      // PauseToolStripMenuItem
+      // 
+      this.PauseToolStripMenuItem.Image = global::GoPlanner.Properties.Resources.pause;
+      this.PauseToolStripMenuItem.Name = "PauseToolStripMenuItem";
+      this.PauseToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
+      this.PauseToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.PauseToolStripMenuItem.Text = "Pause";
+      this.PauseToolStripMenuItem.Click += new System.EventHandler(this.PauseToolStripMenuItem_Click);
       // 
       // PassToolStripMenuItem
       // 
       this.PassToolStripMenuItem.Image = global::GoPlanner.Properties.Resources.pass;
       this.PassToolStripMenuItem.Name = "PassToolStripMenuItem";
-      this.PassToolStripMenuItem.Size = new System.Drawing.Size(336, 44);
+      this.PassToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F9;
+      this.PassToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
       this.PassToolStripMenuItem.Text = "Pass";
       this.PassToolStripMenuItem.Click += new System.EventHandler(this.PassToolStripMenuItem_Click);
-      // 
-      // ScoreToolStripMenuItem
-      // 
-      this.ScoreToolStripMenuItem.Image = global::GoPlanner.Properties.Resources.score;
-      this.ScoreToolStripMenuItem.Name = "ScoreToolStripMenuItem";
-      this.ScoreToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
-      this.ScoreToolStripMenuItem.Size = new System.Drawing.Size(336, 44);
-      this.ScoreToolStripMenuItem.Text = "Score";
-      this.ScoreToolStripMenuItem.Click += new System.EventHandler(this.ScoreToolStripMenuItem_Click);
       // 
       // ResignToolStripMenuItem
       // 
       this.ResignToolStripMenuItem.Image = global::GoPlanner.Properties.Resources.white_flag;
       this.ResignToolStripMenuItem.Name = "ResignToolStripMenuItem";
-      this.ResignToolStripMenuItem.Size = new System.Drawing.Size(336, 44);
+      this.ResignToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
       this.ResignToolStripMenuItem.Text = "Resign";
       this.ResignToolStripMenuItem.Click += new System.EventHandler(this.ResignToolStripMenuItem_Click);
+      // 
+      // ScoreToolStripMenuItem
+      // 
+      this.ScoreToolStripMenuItem.Image = global::GoPlanner.Properties.Resources.score;
+      this.ScoreToolStripMenuItem.Name = "ScoreToolStripMenuItem";
+      this.ScoreToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F10;
+      this.ScoreToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.ScoreToolStripMenuItem.Text = "Score";
+      this.ScoreToolStripMenuItem.Click += new System.EventHandler(this.ScoreToolStripMenuItem_Click);
       // 
       // toolsToolStripMenuItem
       // 
@@ -747,8 +771,8 @@
       this.TableLayoutPanel.Name = "TableLayoutPanel";
       this.TableLayoutPanel.RowCount = 4;
       this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-      this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-      this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+      this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+      this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
       this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 731F));
       this.TableLayoutPanel.Size = new System.Drawing.Size(1195, 946);
       this.TableLayoutPanel.TabIndex = 0;
@@ -767,9 +791,9 @@
             this.OpponentColor,
             this.OpponentMainTime});
       this.toolStrip2.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-      this.toolStrip2.Location = new System.Drawing.Point(0, 80);
+      this.toolStrip2.Location = new System.Drawing.Point(0, 117);
       this.toolStrip2.Name = "toolStrip2";
-      this.toolStrip2.Size = new System.Drawing.Size(1195, 40);
+      this.toolStrip2.Size = new System.Drawing.Size(1195, 50);
       this.toolStrip2.TabIndex = 3;
       this.toolStrip2.Text = "toolStrip2";
       // 
@@ -791,7 +815,7 @@
       // YouName
       // 
       this.YouName.Name = "YouName";
-      this.YouName.Size = new System.Drawing.Size(58, 34);
+      this.YouName.Size = new System.Drawing.Size(58, 44);
       this.YouName.Text = "You:";
       // 
       // YouColor
@@ -800,7 +824,7 @@
       this.YouColor.Image = ((System.Drawing.Image)(resources.GetObject("YouColor.Image")));
       this.YouColor.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.YouColor.Name = "YouColor";
-      this.YouColor.Size = new System.Drawing.Size(46, 34);
+      this.YouColor.Size = new System.Drawing.Size(46, 44);
       this.YouColor.Text = "toolStripButton1";
       this.YouColor.ToolTipText = "Your colour";
       // 
@@ -808,13 +832,13 @@
       // 
       this.YouMainTime.Font = new System.Drawing.Font("Segoe UI", 9F);
       this.YouMainTime.Name = "YouMainTime";
-      this.YouMainTime.Size = new System.Drawing.Size(100, 40);
+      this.YouMainTime.Size = new System.Drawing.Size(100, 50);
       this.YouMainTime.Text = "99:99:99";
       // 
       // OpponentName
       // 
       this.OpponentName.Name = "OpponentName";
-      this.OpponentName.Size = new System.Drawing.Size(144, 34);
+      this.OpponentName.Size = new System.Drawing.Size(144, 44);
       this.OpponentName.Text = "0123456789";
       // 
       // OpponentColor
@@ -823,7 +847,7 @@
       this.OpponentColor.Image = ((System.Drawing.Image)(resources.GetObject("OpponentColor.Image")));
       this.OpponentColor.ImageTransparentColor = System.Drawing.Color.Magenta;
       this.OpponentColor.Name = "OpponentColor";
-      this.OpponentColor.Size = new System.Drawing.Size(46, 34);
+      this.OpponentColor.Size = new System.Drawing.Size(46, 44);
       this.OpponentColor.Text = "toolStripButton1";
       this.OpponentColor.ToolTipText = "Opponent\'s colour";
       // 
@@ -831,7 +855,7 @@
       // 
       this.OpponentMainTime.Font = new System.Drawing.Font("Segoe UI", 9F);
       this.OpponentMainTime.Name = "OpponentMainTime";
-      this.OpponentMainTime.Size = new System.Drawing.Size(100, 40);
+      this.OpponentMainTime.Size = new System.Drawing.Size(100, 50);
       this.OpponentMainTime.Text = "99:99:99";
       // 
       // GoPlanner
@@ -898,7 +922,6 @@
     private System.Windows.Forms.ToolStripButton TSBnone;
     private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
     public System.Windows.Forms.ToolStripTextBox ToolSCapturedWhites;
-    public System.Windows.Forms.ToolStripTextBox ToolSCapturedBlacks;
     private System.Windows.Forms.ToolStrip toolStrip2;
     private System.Windows.Forms.ToolStripTextBox TSTextBox1;
     private System.Windows.Forms.ToolStripTextBox TSTextBox2;
@@ -932,6 +955,9 @@
     private System.Windows.Forms.ToolStripButton TSBscore;
     private System.Windows.Forms.ToolStripMenuItem ResignToolStripMenuItem;
     private System.Windows.Forms.ToolStripButton TSBresign;
+    private System.Windows.Forms.ToolStripTextBox ToolSCapturedBlacks;
+    private System.Windows.Forms.ToolStripMenuItem PauseToolStripMenuItem;
+    private System.Windows.Forms.ToolStripButton TSBpause;
   }
 }
 
