@@ -14,8 +14,21 @@ namespace GoPlanner
   {
     private void TestToolStripMenuItem_Click(object sender, EventArgs e)
     {
-      toolsOptions.OptionalBeep();
-      statusM.Set("Testing beeps done");
+      TestNumbers();
+    }
+    private void TestNumbers ()
+    {
+      double score = -1000;
+      string scoreString = Math.Abs(score).ToString("N1");
+      if (scoreString.EndsWith(".0"))
+      {
+        scoreString = scoreString.Substring(0, scoreString.Length - 2);
+      }
+      if (Math.Abs(score) == 1000)
+      {
+        scoreString = "lots";
+      }
+      statusM.Set("score " + scoreString);
     }
     private void TestBouzy()
     {

@@ -98,14 +98,7 @@ namespace GoPlanner
       capturedWhites = UndoRedoObject.capturedWhites;
       ToolSCapturedBlacks.Text = capturedBlacks.ToString();
       ToolSCapturedWhites.Text = capturedWhites.ToString();
-      if (TSBwhite.Checked)
-      {
-        panelMain.Cursor = whiteCursor;
-      }
-      else
-      {
-        panelMain.Cursor = blackCursor;
-      }
+      SetGameCursor();
     }
     private void SaveState(string caller)
     {
@@ -260,10 +253,11 @@ namespace GoPlanner
     public class UndoRedoBuffer
     {
       public AStone[,] urPoints;
-      public string statusMessage = "";
-      public bool TSBblackWhiteChecked;
-      public bool TSBwhiteChecked;
-      public bool TSBblackChecked;
+      // initialisation for use by TSBnone_Click
+      public string statusMessage = "Black then White stones will be played";
+      public bool TSBblackWhiteChecked = true;
+      public bool TSBwhiteChecked = false;
+      public bool TSBblackChecked = true;
       public short capturedBlacks = 0;
       public short capturedWhites = 0;
 

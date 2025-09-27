@@ -119,9 +119,9 @@
       // 
       this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
       this.panelMain.Font = new System.Drawing.Font("Arial Narrow", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.panelMain.Location = new System.Drawing.Point(3, 170);
+      this.panelMain.Location = new System.Drawing.Point(3, 132);
       this.panelMain.Name = "panelMain";
-      this.panelMain.Size = new System.Drawing.Size(1189, 773);
+      this.panelMain.Size = new System.Drawing.Size(1497, 837);
       this.panelMain.TabIndex = 2;
       this.panelMain.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelMain_Paint);
       // 
@@ -161,7 +161,7 @@
       this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
       this.toolStrip1.Location = new System.Drawing.Point(0, 40);
       this.toolStrip1.Name = "toolStrip1";
-      this.toolStrip1.Size = new System.Drawing.Size(1195, 77);
+      this.toolStrip1.Size = new System.Drawing.Size(1503, 39);
       this.toolStrip1.TabIndex = 1;
       this.toolStrip1.Text = "toolStrip1";
       // 
@@ -464,7 +464,7 @@
             this.helpToolStripMenuItem});
       this.menuStrip1.Location = new System.Drawing.Point(0, 0);
       this.menuStrip1.Name = "menuStrip1";
-      this.menuStrip1.Size = new System.Drawing.Size(1195, 40);
+      this.menuStrip1.Size = new System.Drawing.Size(1503, 40);
       this.menuStrip1.TabIndex = 0;
       this.menuStrip1.Text = "menuStrip1";
       // 
@@ -664,7 +664,7 @@
       this.StartGameToolStripMenuItem.Image = global::GoPlanner.Properties.Resources.settings;
       this.StartGameToolStripMenuItem.Name = "StartGameToolStripMenuItem";
       this.StartGameToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
-      this.StartGameToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.StartGameToolStripMenuItem.Size = new System.Drawing.Size(336, 44);
       this.StartGameToolStripMenuItem.Text = "Set up && Start";
       this.StartGameToolStripMenuItem.ToolTipText = "Set up and Start game";
       this.StartGameToolStripMenuItem.Click += new System.EventHandler(this.StartGameToolStripMenuItem_Click);
@@ -674,7 +674,7 @@
       this.PauseToolStripMenuItem.Image = global::GoPlanner.Properties.Resources.pause;
       this.PauseToolStripMenuItem.Name = "PauseToolStripMenuItem";
       this.PauseToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F8;
-      this.PauseToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.PauseToolStripMenuItem.Size = new System.Drawing.Size(336, 44);
       this.PauseToolStripMenuItem.Text = "Pause";
       this.PauseToolStripMenuItem.Click += new System.EventHandler(this.PauseToolStripMenuItem_Click);
       // 
@@ -683,7 +683,7 @@
       this.PassToolStripMenuItem.Image = global::GoPlanner.Properties.Resources.pass;
       this.PassToolStripMenuItem.Name = "PassToolStripMenuItem";
       this.PassToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F9;
-      this.PassToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.PassToolStripMenuItem.Size = new System.Drawing.Size(336, 44);
       this.PassToolStripMenuItem.Text = "Pass";
       this.PassToolStripMenuItem.Click += new System.EventHandler(this.PassToolStripMenuItem_Click);
       // 
@@ -691,7 +691,7 @@
       // 
       this.ResignToolStripMenuItem.Image = global::GoPlanner.Properties.Resources.white_flag;
       this.ResignToolStripMenuItem.Name = "ResignToolStripMenuItem";
-      this.ResignToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.ResignToolStripMenuItem.Size = new System.Drawing.Size(336, 44);
       this.ResignToolStripMenuItem.Text = "Resign";
       this.ResignToolStripMenuItem.Click += new System.EventHandler(this.ResignToolStripMenuItem_Click);
       // 
@@ -700,7 +700,7 @@
       this.ScoreToolStripMenuItem.Image = global::GoPlanner.Properties.Resources.score;
       this.ScoreToolStripMenuItem.Name = "ScoreToolStripMenuItem";
       this.ScoreToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F10;
-      this.ScoreToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+      this.ScoreToolStripMenuItem.Size = new System.Drawing.Size(336, 44);
       this.ScoreToolStripMenuItem.Text = "Score";
       this.ScoreToolStripMenuItem.Click += new System.EventHandler(this.ScoreToolStripMenuItem_Click);
       // 
@@ -774,7 +774,7 @@
       this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
       this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
       this.TableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 731F));
-      this.TableLayoutPanel.Size = new System.Drawing.Size(1195, 946);
+      this.TableLayoutPanel.Size = new System.Drawing.Size(1503, 972);
       this.TableLayoutPanel.TabIndex = 0;
       // 
       // toolStrip2
@@ -791,9 +791,9 @@
             this.OpponentColor,
             this.OpponentMainTime});
       this.toolStrip2.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-      this.toolStrip2.Location = new System.Drawing.Point(0, 117);
+      this.toolStrip2.Location = new System.Drawing.Point(0, 79);
       this.toolStrip2.Name = "toolStrip2";
-      this.toolStrip2.Size = new System.Drawing.Size(1195, 50);
+      this.toolStrip2.Size = new System.Drawing.Size(1503, 50);
       this.toolStrip2.TabIndex = 3;
       this.toolStrip2.Text = "toolStrip2";
       // 
@@ -860,9 +860,9 @@
       // 
       // GoPlanner
       // 
-      this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
-      this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1195, 946);
+      this.AutoScaleDimensions = new System.Drawing.SizeF(192F, 192F);
+      this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+      this.ClientSize = new System.Drawing.Size(1503, 972);
       this.Controls.Add(this.TableLayoutPanel);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.IsMdiContainer = true;

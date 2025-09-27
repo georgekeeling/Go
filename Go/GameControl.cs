@@ -103,6 +103,7 @@ namespace GoPlanner
         playerBlack = GetOpponentName();
         playerWhite = playerName;
       }
+      SetGameCursor();
       DoPauseMenus();
       EnableDisableBoard();
       passCount = 0;
@@ -123,6 +124,36 @@ namespace GoPlanner
       connection.On("PauseDenied", PauseDenied);
       connection.On("Resume", Resume);
       gameSetUp.Dispose();
+    }
+    private void SetGameCursor()
+    {
+      if (!gameInProgress)
+      {
+        if (TSBwhite.Checked)
+        {
+          panelMain.Cursor = whiteCursor;
+        }
+        else
+        {
+          panelMain.Cursor = blackCursor;
+        }
+      }
+      else
+      {
+        if (gamePaused || !playersTurn)
+        {
+          panelMain.Cursor = Cursors.No;
+          return;
+        }
+        if (playerColor == 1)
+        {
+          panelMain.Cursor = whiteCursor;
+        }
+        else
+        {
+          panelMain.Cursor = blackCursor;
+        }
+      }
     }
     private string GetOpponentName()
     {
@@ -242,6 +273,7 @@ namespace GoPlanner
       PassToolStripMenuItem.Enabled = playing;
       ResignToolStripMenuItem.Enabled = playing;
       TSBresign.Enabled = playing;
+      SetGameCursor();
       EnableDoControls();
     }
     private void MakeMove(int boardX, int boardY)
@@ -540,6 +572,7 @@ namespace GoPlanner
       TSBresign.Enabled = false;
       UndoToolStripMenuItem.Enabled = false;
       UndoStripButton.Enabled = false;
+      SetGameCursor();
     }
     private void Resume()
     {

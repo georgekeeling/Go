@@ -91,17 +91,26 @@ namespace GoPlanner
       ModScore.ScoreCompute1(ref score, ref timeMs, this);
       double timeSec = timeMs / 1000.0;
       string timeString = " (" + timeSec.ToString("N1") + "s)";
+      string scoreString = Math.Abs(score).ToString("N1");
+      if (scoreString.EndsWith(".0"))
+      {
+        scoreString = scoreString.Substring(0, scoreString.Length - 2);
+      }
+      if (Math.Abs(score) == 1000)
+      {
+        scoreString = "lots";
+      }
       if (score == double.MaxValue)
       {
         toolsOptions.ScoreResult.Text = ("Compute failed" + timeString);
       }
       else if (score > 0)
       {
-        toolsOptions.ScoreResult.Text = ("Black wins by " + score + timeString);
+        toolsOptions.ScoreResult.Text = ("Black wins by " + scoreString + timeString);
       }
       else if (score < 0)
       {
-        toolsOptions.ScoreResult.Text = ("White wins by " + -score + timeString);
+        toolsOptions.ScoreResult.Text = ("White wins by " + scoreString + timeString);
       }
       else
       {

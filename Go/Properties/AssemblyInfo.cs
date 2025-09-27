@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 // If you change the AssemblyTitle you must delete all the Go.exe.FriendlyAppName with the old title
 // to get the right effect.
 // The search function in the regedit seems a bit hit and miss
-// that us now automated in GetSetNames
+// that is now automated in GetSetNames
 
 [assembly: AssemblyTitle("Go Planner")]
 [assembly: AssemblyDescription("")]
@@ -43,4 +43,4 @@ using System.Runtime.InteropServices;
 //      Revision
 //
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("7.7")]
+[assembly: AssemblyFileVersion("7.8")]

@@ -20,6 +20,9 @@ namespace GoPlanner
     private void InitPlayReplay()
     {
       // The Play Replay slider Panel
+      toolStrip1.PerformLayout();    // make sure ...Bounds.Right is correct
+      TS1fixedWidth = toolStrip1.Items[toolStrip1.Items.Count - 1].Bounds.Right + 30;   // +30 for margin
+      // toolStrip1.Width is a bit smaller thatn this.Width
       prSLider = new Panel
       {
         Width = 50,
@@ -29,7 +32,6 @@ namespace GoPlanner
       ToolStripControlHost host = new ToolStripControlHost(prSLider);
       toolStrip1.Items.Insert(toolStrip1.Items.Count - 2, host);
       host.AutoSize = false;
-      TS1fixedWidth = toolStrip1.Items[toolStrip1.Items.Count - 1].Bounds.Right;
       CalcPrSliderlWidth();
       host.Width = prSLider.Width;
 
@@ -40,14 +42,14 @@ namespace GoPlanner
     }
     private void CalcPrSliderlWidth()
     {
-      prSLider.Width = Width - TS1fixedWidth  - 100;
+      prSLider.Width = toolStrip1.Width - TS1fixedWidth;
     }
     private void PrSlider_Paint(object sender, PaintEventArgs e)
     {
       // draw square with centre indicating undos / redos ratio
       // total width = undos + redos
       // distance from left = undos
-      int side = toolStrip1.Height;
+      int side = prSLider.Height;
       int centreX = CalcXFromUndos();
       int x = centreX - side / 2;
       if (x < 0) { x = 0; }
